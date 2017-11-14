@@ -13,7 +13,7 @@ Description
 
 It allows you to use callback functions to be notified when the rotary encoder position changes.
 This will reduce and simplify your source code significantly. Tested with Arduino and ESP8266. 
-
+Some of the code based on the library by PJRC (https://www.pjrc.com/teensy/td_libs_Encoder.html).
 
 How to Use
 ----------

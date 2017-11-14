@@ -2,10 +2,6 @@
 /*
   ESP8266/Arduino Library for reading rotary encoder values.
   Created by Lennart Hennigs, November 12, 2017.
-
-!! TODO : COMMENTS
-https://www.pjrc.com/teensy/td_libs_Encoder.html#optimize
-http://playground.arduino.cc/Main/RotaryEncoders
 */
 /////////////////////////////////////////////////////////////////
 

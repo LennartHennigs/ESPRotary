@@ -22,7 +22,7 @@
 
 class ESPRotary {
   private:
-    int pin1, pin2, position, last_position;
+    int pin1, pin2, position, last_position, moves_per_click;
     unsigned long last_read_ms;
     byte direction;
     byte state;
@@ -33,11 +33,15 @@ class ESPRotary {
     CallbackFunction left_cb = NULL;
     
   public:
-    ESPRotary(int pin1, int pin2);
+    ESPRotary(int pin1, int pin2, int moves_per_click = 1);
 
     int getPosition();
     void resetPosition();
     byte getDirection();
+	
+	inline int getMovePerClick() {return moves_per_click;}
+	inline int setMovesPerClick(int movesPerClick) {moves_per_click = movesPerClick;}
+	
     String directionToString(byte direction);
     void setChangedHandler(CallbackFunction f);
     void setRightRotationHandler(CallbackFunction f);

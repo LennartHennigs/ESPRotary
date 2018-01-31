@@ -40,7 +40,6 @@ class ESPRotary {
     byte getDirection();
 	
 	inline int getMovePerClick() {return moves_per_click;}
-	inline void setMovesPerClick(int movesPerClick) {moves_per_click = movesPerClick;}
 	
     String directionToString(byte direction);
     void setChangedHandler(CallbackFunction f);

@@ -21,15 +21,18 @@ How to Use
 These are the constructor and the member functions the library provides:
 
 ```
-    ESPRotary(int pin1, int pin2);
+	// If you have an encoder which increments multiple times per click, adjust moves_per_click to a higher number
+    ESPRotary(int pin1, int pin2, int moves_per_click = 1);
 
     int getPosition();
+	int getMovesPerClick();
     void resetPosition();
     byte getDirection();
     String directionToString(byte direction);
     void setChangedHandler(CallbackFunction f);
     void setRightRotationHandler(CallbackFunction f);
     void setLeftRotationHandler(CallbackFunction f);
+	void setMovesPerClick();
 	
     void loop();
 ```

@@ -9,9 +9,16 @@
 
 /////////////////////////////////////////////////////////////////
 
-ESPRotary::ESPRotary(int pin1, int pin2) {
+
+
+ESPRotary::ESPRotary(int pin1, int pin2, int moves_per_click ) {
   this->pin1 = pin1;
   this->pin2 = pin2;
+  if (moves_per_click < 1) {
+	#pragma message ("At least one move per click required, reverting to 1")
+	moves_per_click = 1;
+  }
+  this->moves_per_click = moves_per_click;
 
   pinMode(pin1, INPUT_PULLUP);
   pinMode(pin2, INPUT_PULLUP);
@@ -66,7 +73,7 @@ String ESPRotary::directionToString(byte direction) {
 /////////////////////////////////////////////////////////////////
 
 int ESPRotary::getPosition() {
-  return position;
+  return position / moves_per_click;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -91,15 +98,18 @@ void ESPRotary::loop() {
       state = (s >> 2);
   
       if (position != last_position) {
-        if (position > last_position) {
-          direction = RE_RIGHT;  
-          if (right_cb != NULL) right_cb (*this);    
-        } else {
-          direction = RE_LEFT;
-          if (left_cb != NULL) left_cb (*this);    
-        }
-        last_position = position;
-        if (change_cb != NULL) change_cb (*this);    
+		if (position - last_position >= moves_per_click || position - last_position <= -moves_per_click) {
+			if (position > last_position) {
+			  direction = RE_RIGHT;  
+			  if (right_cb != NULL) right_cb (*this);    
+			} else {
+			  direction = RE_LEFT;
+			  if (left_cb != NULL) left_cb (*this);    
+			}
+			last_position = position;
+
+			if (change_cb != NULL) change_cb (*this);    
+		}
       }
 }
 

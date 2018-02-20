@@ -25,7 +25,7 @@ These are the constructor and the member functions the library provides:
     ESPRotary(int pin1, int pin2, int moves_per_click = 1);
 
     int getPosition();
-	int getMovesPerClick();
+    int getMovesPerClick();
     void resetPosition();
     byte getDirection();
     String directionToString(byte direction);
@@ -53,7 +53,7 @@ License
 
 MIT License
 
-Copyright (c) 2017 Lennart Hennigs
+Copyright (c) 2018 Lennart Hennigs
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

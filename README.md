@@ -2,7 +2,7 @@ ESPRotary
 ==========
 
 * Author: Lennart Hennigs (https://www.lennarthennigs.de)
-* Copyright (C) 2017 Lennart Hennigs.
+* Copyright (C) 2020 Lennart Hennigs.
 * Released under the MIT license.
 
 Arduino Library to simplify reading rotary encoder data.
@@ -53,7 +53,7 @@ License
 
 MIT License
 
-Copyright (c) 2018 Lennart Hennigs
+Copyright (c) 2017-2020 Lennart Hennigs
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,8 +1,6 @@
 /////////////////////////////////////////////////////////////////
-// Uses https://github.com/LennartHennigs/Button2
-/////////////////////////////////////////////////////////////////
 
-#include "Button2.h";
+#include "Button2.h"; //  https://github.com/LennartHennigs/Button2
 #include "ESPRotary.h";
 
 /////////////////////////////////////////////////////////////////
@@ -38,24 +36,26 @@ void loop() {
 
 /////////////////////////////////////////////////////////////////
 
+// on change
 void rotate(ESPRotary& r) {
    Serial.println(r.getPosition());
 }
 
-
+// on left or right rotation
 void showDirection(ESPRotary& r) {
   Serial.println(r.directionToString(r.getDirection()));
 }
 
-
+// single click
 void showPosition(Button2& btn) {
+  Serial.print("Position: ");
   Serial.println(r.getPosition());
 }
 
+// long click
 void resetPosition(Button2& btn) {
   r.resetPosition();
   Serial.println("Reset!");
-  Serial.println(r.getPosition());  
 }
 
 /////////////////////////////////////////////////////////////////

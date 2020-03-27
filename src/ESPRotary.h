@@ -21,7 +21,7 @@
 /////////////////////////////////////////////////////////////////
 
 class ESPRotary {
- private:
+ protected:
     int pin1, pin2, position, last_position, moves_per_click;
     unsigned long last_read_ms;
     byte direction;

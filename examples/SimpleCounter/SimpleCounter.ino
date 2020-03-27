@@ -29,11 +29,12 @@ void loop() {
 
 /////////////////////////////////////////////////////////////////
 
+// on change
 void rotate(ESPRotary& r) {
    Serial.println(r.getPosition());
 }
 
-
+// on left or right rotattion
 void showDirection(ESPRotary& r) {
   Serial.println(r.directionToString(r.getDirection()));
 }

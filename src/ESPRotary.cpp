@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////
 /*
   ESP8266/Arduino Library for reading rotary encoder values.
-  Copyright 2017 Lennart Hennigs.
+  Copyright 2017-2020 Lennart Hennigs.
 */
 /////////////////////////////////////////////////////////////////
 
@@ -9,9 +9,7 @@
 
 /////////////////////////////////////////////////////////////////
 
-
-
-ESPRotary::ESPRotary(int pin1, int pin2, int moves_per_click ) {
+ESPRotary::ESPRotary(int pin1, int pin2, int moves_per_click /* = 1 */) {
   this->pin1 = pin1;
   this->pin2 = pin2;
   if (moves_per_click < 1) {
@@ -111,7 +109,8 @@ void ESPRotary::loop() {
 
       if (change_cb != NULL) change_cb (*this);
     }
-      }
+  }
+  yield();
 }
 
 /////////////////////////////////////////////////////////////////

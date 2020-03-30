@@ -25,7 +25,7 @@ void setup() {
   r.setLeftRotationHandler(showDirection);
   r.setRightRotationHandler(showDirection);
 
-  b.setClickHandler(showPosition);
+  b.setClickHandler(click);
   b.setLongClickHandler(resetPosition);
 }
 
@@ -47,9 +47,8 @@ void showDirection(ESPRotary& r) {
 }
 
 // single click
-void showPosition(Button2& btn) {
-  Serial.print("Position: ");
-  Serial.println(r.getPosition());
+void click(Button2& btn) {
+  Serial.println("Click!");
 }
 
 // long click

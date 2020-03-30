@@ -110,7 +110,6 @@ void ESPRotary::loop() {
       if (change_cb != NULL) change_cb (*this);
     }
   }
-  yield();
 }
 
 /////////////////////////////////////////////////////////////////

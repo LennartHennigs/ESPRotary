@@ -38,7 +38,7 @@ class ESPRotary {
               int lower_bound = -32768, int upper_bound = 32768);
 
     int getPosition();
-    void resetPosition();
+    void resetPosition(int p = 0);
     byte getDirection();
 
     inline int getMovePerClick() {return moves_per_click;}

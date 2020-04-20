@@ -50,9 +50,9 @@ void ESPRotary::setLeftRotationHandler(CallbackFunction f) {
 
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::resetPosition() {
-  last_position = 0;
-  position = 0;
+void ESPRotary::resetPosition(int p) {
+  last_position = p;
+  position = p;
   direction = 0;
 }
 

@@ -9,7 +9,9 @@
 
 /////////////////////////////////////////////////////////////////
 
-ESPRotary::ESPRotary(int pin1, int pin2, int moves_per_click /* = 1 */) {
+ESPRotary::ESPRotary(int pin1, int pin2, int moves_per_click /* = 1 */,
+                     int lower_bound /* = -32768 */,
+                     int upper_bound /* = 32768 */) {
   this->pin1 = pin1;
   this->pin2 = pin2;
   if (moves_per_click < 1) {
@@ -17,6 +19,8 @@ ESPRotary::ESPRotary(int pin1, int pin2, int moves_per_click /* = 1 */) {
     moves_per_click = 1;
   }
   this->moves_per_click = moves_per_click;
+  this->lower_bound = lower_bound;
+  this->upper_bound = upper_bound;
 
   pinMode(pin1, INPUT_PULLUP);
   pinMode(pin2, INPUT_PULLUP);
@@ -77,27 +81,27 @@ int ESPRotary::getPosition() {
 /////////////////////////////////////////////////////////////////
 
 void ESPRotary::loop() {
-    int s = state & 3;
-    if (digitalRead(pin1)) s |= 4;
-    if (digitalRead(pin2)) s |= 8;
+  int s = state & 3;
+  if (digitalRead(pin1)) s |= 4;
+  if (digitalRead(pin2)) s |= 8;
 
-      switch (s) {
-        case 0: case 5: case 10: case 15:
-          break;
-        case 1: case 7: case 8: case 14:
-          position++; break;
-        case 2: case 4: case 11: case 13:
-          position--; break;
-        case 3: case 12:
-          position += 2; break;
-        default:
-          position -= 2; break;
-      }
-      state = (s >> 2);
+  switch (s) {
+    case 0: case 5: case 10: case 15:
+      break;
+    case 1: case 7: case 8: case 14:
+      if (position < upper_bound) position++; break;
+    case 2: case 4: case 11: case 13:
+      if (position > lower_bound) position--; break;
+    case 3: case 12:
+      if (position < upper_bound) position += 2; break;
+    default:
+      if (position > lower_bound) position -= 2; break;
+  }
+  state = (s >> 2);
 
-      if (position != last_position) {
+  if (position != last_position) {
     if (position - last_position >= moves_per_click ||
-      position - last_position <= -moves_per_click) {
+        position - last_position <= -moves_per_click) {
       if (position > last_position) {
         direction = RE_RIGHT;
         if (right_cb != NULL) right_cb (*this);

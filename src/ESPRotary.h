@@ -22,7 +22,8 @@
 
 class ESPRotary {
  protected:
-    int pin1, pin2, position, last_position, moves_per_click;
+    int pin1, pin2, position, last_position, moves_per_click,
+        lower_bound, upper_bound;
     unsigned long last_read_ms;
     byte direction;
     byte state;
@@ -33,7 +34,8 @@ class ESPRotary {
     CallbackFunction left_cb = NULL;
 
  public:
-    ESPRotary(int pin1, int pin2, int moves_per_click = 1);
+    ESPRotary(int pin1, int pin2, int moves_per_click = 1,
+              int lower_bound = -32768, int upper_bound = 32768);
 
     int getPosition();
     void resetPosition();

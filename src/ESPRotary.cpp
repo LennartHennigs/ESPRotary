@@ -17,7 +17,7 @@ ESPRotary::ESPRotary(int pin1, int pin2, int moves_per_click /* = 1 */, int lowe
     moves_per_click = 1;
   }
   this->moves_per_click = moves_per_click;
-  if (lower_bound < upper_bound) {
+  if (lower_bound > upper_bound) {
     #pragma message("Switching upper and lower bounds!")
   }
   this->lower_bound = (lower_bound < upper_bound) ? lower_bound : upper_bound;

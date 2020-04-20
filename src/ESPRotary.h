@@ -34,8 +34,7 @@ class ESPRotary {
     CallbackFunction left_cb = NULL;
 
  public:
-    ESPRotary(int pin1, int pin2, int moves_per_click = 1,
-              int lower_bound = -32768, int upper_bound = 32768);
+    ESPRotary(int pin1, int pin2, int moves_per_click = 1, int lower_bound = -32768, int upper_bound = 32768);
 
     int getPosition();
     void resetPosition();

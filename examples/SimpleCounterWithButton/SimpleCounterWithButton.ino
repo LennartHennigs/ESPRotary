@@ -5,13 +5,16 @@
 
 /////////////////////////////////////////////////////////////////
 
-#define ROTARY_PIN1	14
-#define ROTARY_PIN2	12
-#define BUTTON_PIN	2
+#define ROTARY_PIN1	D1
+#define ROTARY_PIN2	D2
+#define BUTTON_PIN	D4
+
+#define CLICKS_PER_STEP   4   // this number depends on your rotary encoder 
+
 
 /////////////////////////////////////////////////////////////////
 
-ESPRotary r = ESPRotary(ROTARY_PIN1, ROTARY_PIN2);
+ESPRotary r = ESPRotary(ROTARY_PIN1, ROTARY_PIN2, CLICKS_PER_STEP);
 Button2 b = Button2(BUTTON_PIN);
 
 /////////////////////////////////////////////////////////////////
@@ -25,7 +28,7 @@ void setup() {
   r.setLeftRotationHandler(showDirection);
   r.setRightRotationHandler(showDirection);
 
-  b.setClickHandler(click);
+  b.setTapHandler(click);
   b.setLongClickHandler(resetPosition);
 }
 
@@ -45,7 +48,7 @@ void rotate(ESPRotary& r) {
 void showDirection(ESPRotary& r) {
   Serial.println(r.directionToString(r.getDirection()));
 }
-
+ 
 // single click
 void click(Button2& btn) {
   Serial.println("Click!");

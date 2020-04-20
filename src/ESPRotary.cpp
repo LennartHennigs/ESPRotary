@@ -9,9 +9,7 @@
 
 /////////////////////////////////////////////////////////////////
 
-ESPRotary::ESPRotary(int pin1, int pin2, int moves_per_click /* = 1 */,
-                     int lower_bound /* = -32768 */,
-                     int upper_bound /* = 32768 */) {
+ESPRotary::ESPRotary(int pin1, int pin2, int moves_per_click /* = 1 */, int lower_bound /* = -32768 */, int upper_bound /* = 32768 */) {
   this->pin1 = pin1;
   this->pin2 = pin2;
   if (moves_per_click < 1) {
@@ -51,8 +49,8 @@ void ESPRotary::setLeftRotationHandler(CallbackFunction f) {
 /////////////////////////////////////////////////////////////////
 
 void ESPRotary::resetPosition() {
-  last_position = 0;
-  position = 0;
+  last_position = (lower_bound > 0) ? lower_bound * moves_per_click : 0;
+  position = last_position;
   direction = 0;
 }
 
@@ -89,31 +87,31 @@ void ESPRotary::loop() {
     case 0: case 5: case 10: case 15:
       break;
     case 1: case 7: case 8: case 14:
-      if (position < upper_bound) position++; break;
+        position++; break;
     case 2: case 4: case 11: case 13:
-      if (position > lower_bound) position--; break;
+      position--; break;
     case 3: case 12:
-      if (position < upper_bound) position += 2; break;
+      position += 2; break;
     default:
-      if (position > lower_bound) position -= 2; break;
+      position -= 2; break;
   }
   state = (s >> 2);
-
-  if (position != last_position) {
-    if (position - last_position >= moves_per_click ||
-        position - last_position <= -moves_per_click) {
-      if (position > last_position) {
-        direction = RE_RIGHT;
-        if (right_cb != NULL) right_cb (*this);
-      } else {
-        direction = RE_LEFT;
-        if (left_cb != NULL) left_cb (*this);
+  
+  if (getPosition() >= lower_bound && getPosition() <= upper_bound) {
+    if (position != last_position) {
+      if (abs(position - last_position) >= moves_per_click) {
+        if (position > last_position) {
+          direction = RE_RIGHT;
+          if (right_cb != NULL) right_cb (*this);
+        } else {
+          direction = RE_LEFT;
+          if (left_cb != NULL) left_cb (*this);
+        }
+        last_position = position;      
+        if (change_cb != NULL) change_cb (*this);
       }
-      last_position = position;
-
-      if (change_cb != NULL) change_cb (*this);
     }
-  }
+  } else position = last_position;
 }
 
 /////////////////////////////////////////////////////////////////

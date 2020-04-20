@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - none, yet
 
 
-## [1.2.0] - 2020-04-16
+## [1.2.1] - 2020-04-20
+- Fixed bug related to minimum and maximum bounds
+- Added ```RangedCounter.ino``` example
+
+
+## [1.2.0] - 2020-04-20
 - Created and added CHANGELOG.md 
 - Added optional minimum and maximum bounds to constructor (as suggested by [cornfeedhobo](https://github.com/cornfeedhobo) in issue [#9](https://github.com/LennartHennigs/ESPRotary/issues/9))
 

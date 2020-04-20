@@ -22,7 +22,7 @@ These are the constructor and the member functions the library provides:
 
 ```
 	// If you have an encoder which increments multiple times per click, adjust moves_per_click to a higher number
-    ESPRotary(int pin1, int pin2, int moves_per_click = 1);
+    ESPRotary(int pin1, int pin2, int moves_per_click = 1, int lower_bound = -32768, int upper_bound = 32768);
 
     int getPosition();
     int getMovesPerClick();

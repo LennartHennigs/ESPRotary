@@ -22,8 +22,7 @@
 
 class ESPRotary {
  protected:
-    int pin1, pin2, position, last_position, moves_per_click,
-        lower_bound, upper_bound;
+    int pin1, pin2, position, last_position, moves_per_click,lower_bound, upper_bound;
     unsigned long last_read_ms;
     byte direction;
     byte state;

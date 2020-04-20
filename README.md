@@ -26,7 +26,7 @@ These are the constructor and the member functions the library provides:
 
     int getPosition();
     int getMovesPerClick();
-    void resetPosition();
+    void resetPosition(int p = 0);
     byte getDirection();
     String directionToString(byte direction);
     void setChangedHandler(CallbackFunction f);

@@ -24,8 +24,8 @@ Button2 b = Button2(BUTTON_PIN);
 void setup() {
   Serial.begin(9600);
   delay(50);
-  Serial.println("\n\nRanged Counter");
-  Serial.println("You can only set values between " + String(MIN_POS) + " and " + String(MAX_POS));
+  Serial.println("\n\Ranged Counter");
+  Serial.println("You can only set values between " + String(MIN_POS) + " and " + String(MAX_POS) +".");
   
   r.setChangedHandler(rotate);
   r.setLeftRotationHandler(showDirection);

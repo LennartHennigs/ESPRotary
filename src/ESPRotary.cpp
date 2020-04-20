@@ -81,27 +81,27 @@ int ESPRotary::getPosition() {
 /////////////////////////////////////////////////////////////////
 
 void ESPRotary::loop() {
-    int s = state & 3;
-    if (digitalRead(pin1)) s |= 4;
-    if (digitalRead(pin2)) s |= 8;
+  int s = state & 3;
+  if (digitalRead(pin1)) s |= 4;
+  if (digitalRead(pin2)) s |= 8;
 
-      switch (s) {
-        case 0: case 5: case 10: case 15:
-          break;
-        case 1: case 7: case 8: case 14:
-          if (position < upper_bound) position++; break;
-        case 2: case 4: case 11: case 13:
-          if (position > lower_bound) position--; break;
-        case 3: case 12:
-          if (position < upper_bound) position += 2; break;
-        default:
-          if (position > lower_bound) position -= 2; break;
-      }
-      state = (s >> 2);
+  switch (s) {
+    case 0: case 5: case 10: case 15:
+      break;
+    case 1: case 7: case 8: case 14:
+      if (position < upper_bound) position++; break;
+    case 2: case 4: case 11: case 13:
+      if (position > lower_bound) position--; break;
+    case 3: case 12:
+      if (position < upper_bound) position += 2; break;
+    default:
+      if (position > lower_bound) position -= 2; break;
+  }
+  state = (s >> 2);
 
-      if (position != last_position) {
+  if (position != last_position) {
     if (position - last_position >= moves_per_click ||
-      position - last_position <= -moves_per_click) {
+        position - last_position <= -moves_per_click) {
       if (position > last_position) {
         direction = RE_RIGHT;
         if (right_cb != NULL) right_cb (*this);

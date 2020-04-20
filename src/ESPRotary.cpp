@@ -17,8 +17,11 @@ ESPRotary::ESPRotary(int pin1, int pin2, int moves_per_click /* = 1 */, int lowe
     moves_per_click = 1;
   }
   this->moves_per_click = moves_per_click;
-  this->lower_bound = lower_bound;
-  this->upper_bound = upper_bound;
+  if (lower_bound < upper_bound) {
+    #pragma message("Switching upper and lower bounds!")
+  }
+  this->lower_bound = (lower_bound < upper_bound) ? lower_bound : upper_bound;
+  this->upper_bound = (lower_bound < upper_bound) ? upper_bound: lower_bound;
 
   pinMode(pin1, INPUT_PULLUP);
   pinMode(pin2, INPUT_PULLUP);
@@ -49,7 +52,11 @@ void ESPRotary::setLeftRotationHandler(CallbackFunction f) {
 /////////////////////////////////////////////////////////////////
 
 void ESPRotary::resetPosition(int p /* = 0 */) {
-  last_position = (lower_bound > p) ? lower_bound * moves_per_click : p;
+  if (p > upper_bound) {
+    last_position = upper_bound * moves_per_click;
+  } else {
+    last_position = (lower_bound > p) ? lower_bound * moves_per_click : p;
+  }
   position = last_position;
   direction = 0;
 }

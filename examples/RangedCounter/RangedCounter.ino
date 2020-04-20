@@ -59,7 +59,7 @@ void click(Button2& btn) {
 
 // long click
 void resetPosition(Button2& btn) {
-  r.resetPosition();
+  r.resetPosition(1000);
   Serial.println("Reset!");
 }
 

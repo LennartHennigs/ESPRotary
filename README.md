@@ -30,15 +30,17 @@ These are the constructor and the member functions the library provides:
         int upper_bound = 32768
         );
 
-    int getPosition();
-    int getMovesPerClick();
-    void resetPosition(int p = 0);
-    byte getDirection();
-    String directionToString(byte direction);
     void setChangedHandler(CallbackFunction f);
     void setRightRotationHandler(CallbackFunction f);
     void setLeftRotationHandler(CallbackFunction f);
-	
+
+    int getPosition();
+    byte getDirection();
+    String directionToString(byte direction);
+    void resetPosition(int p = 0);
+
+    int getMovesPerClick();
+
     void loop();
 ```
 

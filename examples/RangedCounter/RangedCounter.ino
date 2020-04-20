@@ -10,11 +10,13 @@
 #define BUTTON_PIN	D4
 
 #define CLICKS_PER_STEP   4   // this number depends on your rotary encoder 
+#define MIN_POS   5
+#define MAX_POS   20
 
 
 /////////////////////////////////////////////////////////////////
 
-ESPRotary r = ESPRotary(ROTARY_PIN1, ROTARY_PIN2, CLICKS_PER_STEP);
+ESPRotary r = ESPRotary(ROTARY_PIN1, ROTARY_PIN2, CLICKS_PER_STEP, MIN_POS, MAX_POS);
 Button2 b = Button2(BUTTON_PIN);
 
 /////////////////////////////////////////////////////////////////
@@ -22,7 +24,8 @@ Button2 b = Button2(BUTTON_PIN);
 void setup() {
   Serial.begin(9600);
   delay(50);
-  Serial.println("\n\nSimple Counter");
+  Serial.println("\n\nRanged Counter");
+  Serial.println("You can only set values between " + String(MIN_POS) + " and " + String(MAX_POS));
   
   r.setChangedHandler(rotate);
   r.setLeftRotationHandler(showDirection);

@@ -12,7 +12,7 @@
 ESPRotary::ESPRotary(int pin1, int pin2, int moves_per_click /* = 1 */, int lower_bound /* = -32768 */, int upper_bound /* = 32768 */) {
   this->pin1 = pin1;
   this->pin2 = pin2;
-  this->moves_per_click (moves_per_click < 1) = 1 : moves_per_click;
+  this->moves_per_click = (moves_per_click < 1) ? 1 : moves_per_click;
   this->lower_bound = (lower_bound < upper_bound) ? lower_bound : upper_bound;
   this->upper_bound = (lower_bound < upper_bound) ? upper_bound: lower_bound;
 

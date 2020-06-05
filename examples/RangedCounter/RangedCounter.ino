@@ -24,7 +24,7 @@ Button2 b = Button2(BUTTON_PIN);
 void setup() {
   Serial.begin(9600);
   delay(50);
-  Serial.println("\n\nRanged Counter");
+  Serial.println("\n\Ranged Counter");
   Serial.println("You can only set values between " + String(MIN_POS) + " and " + String(MAX_POS) +".");
   
   r.setChangedHandler(rotate);
@@ -59,7 +59,7 @@ void click(Button2& btn) {
 
 // long click
 void resetPosition(Button2& btn) {
-  r.resetPosition(1000);
+  r.resetPosition();
   Serial.println("Reset!");
 }
 

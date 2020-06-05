@@ -50,7 +50,7 @@ void ESPRotary::resetPosition(int p /* = 0 */) {
   } else {
     last_position = (lower_bound > p) ? lower_bound * moves_per_click : p;
   }
-  position = last_position;
+  position = last_position * moves_per_click;
   direction = 0;
 }
 

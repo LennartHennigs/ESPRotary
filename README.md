@@ -21,11 +21,11 @@ How to Use
 These are the constructor and the member functions the library provides:
 
 ```
-	// If you have an encoder which increments multiple times per click, adjust moves_per_click to a higher number
+// If you have an encoder which increments multiple times per click, adjust steps_per_click
     ESPRotary(
         int pin1, 
         int pin2, 
-        int moves_per_click = 1, 
+        int steps_per_click = 1, 
         int lower_bound = -32768, 
         int upper_bound = 32768
         );
@@ -35,11 +35,13 @@ These are the constructor and the member functions the library provides:
     void setLeftRotationHandler(CallbackFunction f);
 
     int getPosition();
-    byte getDirection();
-    String directionToString(byte direction);
     void resetPosition(int p = 0);
 
-    int getMovesPerClick();
+    byte getDirection();
+    String directionToString(byte direction);
+
+    void setStepsPerClick(int steps);
+    int getStepsPerClick();
 
     void loop();
 ```

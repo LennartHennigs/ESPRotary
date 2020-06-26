@@ -9,12 +9,12 @@
 
 /////////////////////////////////////////////////////////////////
 
-ESPRotary::ESPRotary(int pin1, int pin2, int moves_per_click /* = 1 */, int lower_bound /* = -32768 */, int upper_bound /* = 32768 */) {
+ESPRotary::ESPRotary(int pin1, int pin2, int steps_per_click /* = 1 */, int lower_bound /* = -32768 */, int upper_bound /* = 32768 */) {
   this->pin1 = pin1;
   this->pin2 = pin2;
-  this->moves_per_click = (moves_per_click < 1) ? 1 : moves_per_click;
   this->lower_bound = (lower_bound < upper_bound) ? lower_bound : upper_bound;
   this->upper_bound = (lower_bound < upper_bound) ? upper_bound: lower_bound;
+  setStepsPerClick(steps_per_click);
 
   pinMode(pin1, INPUT_PULLUP);
   pinMode(pin2, INPUT_PULLUP);
@@ -46,12 +46,24 @@ void ESPRotary::setLeftRotationHandler(CallbackFunction f) {
 
 void ESPRotary::resetPosition(int p /* = 0 */) {
   if (p > upper_bound) {
-    last_position = upper_bound * moves_per_click;
+    last_position = upper_bound * steps_per_click;
   } else {
-    last_position = (lower_bound > p) ? lower_bound * moves_per_click : p;
+    last_position = (lower_bound > p) ? lower_bound * steps_per_click : p;
   }
-  position = last_position * moves_per_click;
+  position = last_position * steps_per_click;
   direction = 0;
+}
+
+/////////////////////////////////////////////////////////////////
+
+void ESPRotary::setStepsPerClick(int steps) {  
+  steps_per_click = (steps < 1) ? 1 : steps;
+}
+
+/////////////////////////////////////////////////////////////////
+
+int ESPRotary::getStepsPerClick() {
+  return steps_per_click;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -73,7 +85,7 @@ String ESPRotary::directionToString(byte direction) {
 /////////////////////////////////////////////////////////////////
 
 int ESPRotary::getPosition() {
-  return position / moves_per_click;
+  return position / steps_per_click;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -99,7 +111,7 @@ void ESPRotary::loop() {
   
   if (getPosition() >= lower_bound && getPosition() <= upper_bound) {
     if (position != last_position) {
-      if (abs(position - last_position) >= moves_per_click) {
+      if (abs(position - last_position) >= steps_per_click) {
         if (position > last_position) {
           direction = RE_RIGHT;
           if (right_cb != NULL) right_cb (*this);

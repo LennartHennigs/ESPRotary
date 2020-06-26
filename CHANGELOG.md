@@ -4,7 +4,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+
+## [1.4] - 2020-06-26
+
+## [1.3] - 2020-06-05
+- Fixed typo in example
+- updated ```README.md```
+- added function ```setStepsPerClick()```, as requested by [asalillo](https://github.com/lasalillo) in [#12](https://github.com/LennartHennigs/ESPRotary/issues/12)
+- Fixed bug [#13](https://github.com/LennartHennigs/ESPRotary/issues/13) in ```resetPosition()```, as pointed out by [jjarp](https://github.com/jjarp)
 - removed ```#pragma``` message for ```moves_per_click``` contructor parameter
+- renamed  variable ```moves_per_click``` to ```steps_per_click```
 
 
 ## [1.2.1] - 2020-04-20

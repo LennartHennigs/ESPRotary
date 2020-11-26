@@ -9,7 +9,7 @@
 
 /////////////////////////////////////////////////////////////////
 
-ESPRotary::ESPRotary(int pin1, int pin2, int steps_per_click /* = 1 */, int lower_bound /* = -32768 */, int upper_bound /* = 32768 */) {
+ESPRotary::ESPRotary(int pin1, int pin2, int steps_per_click /* = 1 */, int lower_bound /* = INT16_MIN */, int upper_bound /* = INT16_MAX */) {
   this->pin1 = pin1;
   this->pin2 = pin2;
   this->lower_bound = (lower_bound < upper_bound) ? lower_bound : upper_bound;
@@ -56,7 +56,7 @@ void ESPRotary::resetPosition(int p /* = 0 */) {
 
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::setStepsPerClick(int steps) {  
+void ESPRotary::setStepsPerClick(int steps) {
   steps_per_click = (steps < 1) ? 1 : steps;
 }
 
@@ -108,7 +108,7 @@ void ESPRotary::loop() {
       position -= 2; break;
   }
   state = (s >> 2);
-  
+
   if (getPosition() >= lower_bound && getPosition() <= upper_bound) {
     if (position != last_position) {
       if (abs(position - last_position) >= steps_per_click) {
@@ -119,7 +119,7 @@ void ESPRotary::loop() {
           direction = RE_LEFT;
           if (left_cb != NULL) left_cb (*this);
         }
-        last_position = position;      
+        last_position = position;
         if (change_cb != NULL) change_cb (*this);
       }
     }

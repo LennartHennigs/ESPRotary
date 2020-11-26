@@ -12,7 +12,7 @@ Description
 -----------
 
 It allows you to use callback functions to be notified when the rotary encoder position changes.
-This will reduce and simplify your source code significantly. Tested with Arduino and ESP8266. 
+This will reduce and simplify your source code significantly. Tested with Arduino and ESP8266.
 Some of the code based on the library by PJRC (https://www.pjrc.com/teensy/td_libs_Encoder.html).
 
 How to Use
@@ -23,11 +23,11 @@ These are the constructor and the member functions the library provides:
 ```
 // If you have an encoder which increments multiple times per click, adjust steps_per_click
     ESPRotary(
-        int pin1, 
-        int pin2, 
-        int steps_per_click = 1, 
-        int lower_bound = -32768, 
-        int upper_bound = 32768
+        int pin1,
+        int pin2,
+        int steps_per_click = 1,
+        int lower_bound = INT16_MIN,
+        int upper_bound = INT16_MAX
         );
 
     void setChangedHandler(CallbackFunction f);
@@ -53,7 +53,7 @@ The library provides several callback handlers to be notified when the rotary en
 
 Installation
 ------------
-Open the Arduino IDE choose "Sketch > Include Library" and search for "ESP Rotary". 
+Open the Arduino IDE choose "Sketch > Include Library" and search for "ESP Rotary".
 Or download the ZIP archive (https://github.com/lennarthennigs/ESPRotary/zipball/master), and choose "Sketch > Include Library > Add .ZIP Library..." and select the downloaded file.
 
 

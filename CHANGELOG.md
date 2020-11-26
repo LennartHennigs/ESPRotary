@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+- Avoid triggering change_cb after resetPosition to other position than 0
 
 ## [1.4] - 2020-06-26
 
@@ -23,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [1.2.0] - 2020-04-20
-- Created and added CHANGELOG.md 
+- Created and added CHANGELOG.md
 - Added optional minimum and maximum bounds to constructor (as suggested by [cornfeedhobo](https://github.com/cornfeedhobo) in issue [#9](https://github.com/LennartHennigs/ESPRotary/issues/9))
 
 

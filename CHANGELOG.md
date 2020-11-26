@@ -4,7 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-- Fixed upper_bound overflow preventing exemple to work on arduino Uno
+- Added option to define initial value in the constructor as suggested by [ab-it](https://github.com/ab-it) in [#20] (https://github.com/LennartHennigs/ESPRotary/issues/20)
+- Fixed upper_bound overflow preventing exemple to work on arduino Uno as suggested by [sblaisot](https://github.com/sblaisot) in pull request [#22] (https://github.com/LennartHennigs/ESPRotary/pull/22) 
 - Avoid triggering change_cb after resetPosition to other position than 0
 
 ## [1.4] - 2020-06-26

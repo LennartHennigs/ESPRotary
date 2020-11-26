@@ -5,6 +5,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 - Fixed upper_bound overflow preventing exemple to work on arduino Uno
+- Avoid triggering change_cb after resetPosition to other position than 0
 
 ## [1.4] - 2020-06-26
 

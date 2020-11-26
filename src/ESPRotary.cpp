@@ -48,9 +48,9 @@ void ESPRotary::resetPosition(int p /* = 0 */) {
   if (p > upper_bound) {
     last_position = upper_bound * steps_per_click;
   } else {
-    last_position = (lower_bound > p) ? lower_bound * steps_per_click : p;
+    last_position = (lower_bound > p) ? lower_bound * steps_per_click : p * steps_per_click;
   }
-  position = last_position * steps_per_click;
+  position = last_position;
   direction = 0;
 }
 

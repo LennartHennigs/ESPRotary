@@ -4,13 +4,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+- 
+
+## [1.4] - 2020-11-26
 - added callback to ```resetPosition()``` as suggested by [ab-it](https://github.com/ab-it) in [#17](https://github.com/LennartHennigs/ESPRotary/issues/17)
 - Fixed warning in ```directionToString()``` as suggested by [ab-it](https://github.com/ab-it) in [#18](https://github.com/LennartHennigs/ESPRotary/issues/18)
 - Added option to define initial value in the constructor as suggested by [ab-it](https://github.com/ab-it) in [#20] (https://github.com/LennartHennigs/ESPRotary/issues/20)
 - Fixed upper_bound overflow preventing exemple to work on arduino Uno as suggested by [sblaisot](https://github.com/sblaisot) in pull request [#22] (https://github.com/LennartHennigs/ESPRotary/pull/22) 
 - Avoid triggering change_cb after resetPosition to other position than 0
-
-## [1.4] - 2020-06-26
 
 ## [1.3] - 2020-06-05
 - Fixed typo in example

@@ -31,6 +31,8 @@ class ESPRotary {
     CallbackFunction change_cb = NULL;
     CallbackFunction right_cb = NULL;
     CallbackFunction left_cb = NULL;
+    CallbackFunction lower_cb = NULL;
+    CallbackFunction upper_cb = NULL;
 
  public:
     ESPRotary(int pin1, int pin2, int steps_per_click = 1, int inital_pos = 0, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX);
@@ -46,6 +48,8 @@ class ESPRotary {
     void setChangedHandler(CallbackFunction f);
     void setRightRotationHandler(CallbackFunction f);
     void setLeftRotationHandler(CallbackFunction f);
+    void setUpperOverflowHandler(CallbackFunction f);
+    void setLowerOverflowHandler(CallbackFunction f);
 
     void loop();
 };

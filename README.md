@@ -34,6 +34,8 @@ These are the constructor and the member functions the library provides:
     void setChangedHandler(CallbackFunction f);
     void setRightRotationHandler(CallbackFunction f);
     void setLeftRotationHandler(CallbackFunction f);
+    void setUpperOverflowHandler(CallbackFunction f);
+    void setLowerOverflowHandler(CallbackFunction f);
 
     int getPosition();
     void resetPosition(int p = 0);

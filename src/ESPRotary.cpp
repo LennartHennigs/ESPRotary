@@ -20,7 +20,7 @@ ESPRotary::ESPRotary(int pin1, int pin2, int steps_per_click /* = 1 */,  int ini
   pinMode(pin2, INPUT_PULLUP);
 
   loop();
-  resetPosition(inital_pos);
+  resetPosition(inital_pos, false);
   last_read_ms = 0;
 }
 
@@ -44,17 +44,17 @@ void ESPRotary::setLeftRotationHandler(CallbackFunction f) {
 
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::resetPosition(int p /* = 0 */) {
+void ESPRotary::resetPosition(int p /* = 0 */, bool fireCallback /* = true */) {
   if (p > upper_bound) {
     last_position = upper_bound * steps_per_click;
   } else {
     last_position = (lower_bound > p) ? lower_bound * steps_per_click : p * steps_per_click;
   }
 
-if (position != last_position) {
-  position = last_position;
-  if (change_cb != NULL) change_cb (*this);
-}
+  if (position != last_position) {
+    position = last_position;
+    if (fireCallback && change_cb != NULL) change_cb (*this);
+  }
   direction = 0;
 }
 

@@ -36,7 +36,7 @@ These are the constructor and the member functions the library provides:
     void setLeftRotationHandler(CallbackFunction f);
 
     int getPosition();
-    void resetPosition(int p = 0);
+    void resetPosition(int p = 0, bool fireCallback = true);
 
     byte getDirection();
     String directionToString(byte direction);

@@ -44,6 +44,18 @@ void ESPRotary::setLeftRotationHandler(CallbackFunction f) {
 
 /////////////////////////////////////////////////////////////////
 
+void ESPRotary::setUpperOverflowHandler(CallbackFunction f) {
+  upper_cb = f;
+}
+
+/////////////////////////////////////////////////////////////////
+
+void ESPRotary::setLowerOverflowHandler(CallbackFunction f) {
+  lower_cb = f;
+}
+
+/////////////////////////////////////////////////////////////////
+
 void ESPRotary::resetPosition(int p /* = 0 */, bool fireCallback /* = true */) {
   if (p > upper_bound) {
     last_position = upper_bound * steps_per_click;
@@ -81,9 +93,9 @@ byte ESPRotary::getDirection() {
 String ESPRotary::directionToString(byte direction) {
   if (direction == RE_LEFT) {
     return "LEFT";
-  } else (direction == RE_RIGHT) {
+  } else {
     return "RIGHT";
-    }
+  }
 }
 
 /////////////////////////////////////////////////////////////////
@@ -127,7 +139,12 @@ void ESPRotary::loop() {
         if (change_cb != NULL) change_cb (*this);
       }
     }
-  } else position = last_position;
+  } else {
+    int denied_position = getPosition();
+    position = last_position;
+    if (denied_position < lower_bound && lower_cb != NULL) lower_cb (*this);
+    if (denied_position > upper_bound && upper_cb != NULL) upper_cb (*this);
+  }
 }
 
 /////////////////////////////////////////////////////////////////

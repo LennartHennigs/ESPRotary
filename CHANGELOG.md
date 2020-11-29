@@ -4,7 +4,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-- 
+- reordered the constructor parameters to mitigate a code breaking change as suggested by [ab-it](https://github.com/ab-it) in pull request [#25](https://github.com/LennartHennigs/ESPRotary/pull/25)
+- made ```resetPosition()``` callback trigger optional as suggested by [ab-it](https://github.com/ab-it) 
+- fixed bug in ```directionToString()``` introduced in the 1.4 version, found by [ab-it](https://github.com/ab-it) 
 
 ## [1.4] - 2020-11-26
 - added callback to ```resetPosition()``` as suggested by [ab-it](https://github.com/ab-it) in [#17](https://github.com/LennartHennigs/ESPRotary/issues/17)

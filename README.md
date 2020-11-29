@@ -26,9 +26,9 @@ These are the constructor and the member functions the library provides:
         int pin1,
         int pin2,
         int steps_per_click = 1,
-        int inital_pos = 0
         int lower_bound = INT16_MIN,
-        int upper_bound = INT16_MAX
+        int upper_bound = INT16_MAX,
+        int inital_pos = 0
         );
 
     void setChangedHandler(CallbackFunction f);

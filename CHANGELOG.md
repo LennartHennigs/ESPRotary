@@ -4,7 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-none
+- remove unused variable 'last_read_ms'
 
 ## [1.4.1] - 2020-11-29
 - reordered the constructor parameters to mitigate a code breaking change as suggested by [ab-it](https://github.com/ab-it) in pull request [#25](https://github.com/LennartHennigs/ESPRotary/pull/25)

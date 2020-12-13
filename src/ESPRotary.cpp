@@ -21,7 +21,6 @@ ESPRotary::ESPRotary(int pin1, int pin2, int steps_per_click /* = 1 */,  int low
 
   loop();
   resetPosition(inital_pos, false);
-  last_read_ms = 0;
 }
 
 /////////////////////////////////////////////////////////////////

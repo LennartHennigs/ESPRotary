@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////
 /*
   ESP8266/Arduino Library for reading rotary encoder values.
-  Copyright 2017-2020 Lennart Hennigs.
+  Copyright 2017-2021 Lennart Hennigs.
 */
 /////////////////////////////////////////////////////////////////
 
@@ -123,26 +123,24 @@ void ESPRotary::loop() {
       position -= 2; break;
   }
   state = (s >> 2);
-
-  if (getPosition() >= lower_bound && getPosition() <= upper_bound) {
-    if (position != last_position) {
-      if (abs(position - last_position) >= steps_per_click) {
-        if (position > last_position) {
-          direction = RE_RIGHT;
-          if (right_cb != NULL) right_cb (*this);
-        } else {
-          direction = RE_LEFT;
-          if (left_cb != NULL) left_cb (*this);
-        }
-        last_position = position;
-        if (change_cb != NULL) change_cb (*this);
+  
+  if (position != last_position && (abs(position - last_position) >= steps_per_click)) {
+    int current_position = getPosition();
+    if (current_position >= lower_bound && current_position <= upper_bound) {
+      if (position > last_position) {
+        direction = RE_RIGHT;
+        if (right_cb != NULL) right_cb (*this);
+      } else {
+        direction = RE_LEFT;
+        if (left_cb != NULL) left_cb (*this);
       }
+      last_position = position;
+      if (change_cb != NULL) change_cb (*this);
+    } else {
+      position = last_position;
+      if (current_position < lower_bound && lower_cb != NULL) lower_cb (*this);
+      if (current_position > upper_bound && upper_cb != NULL) upper_cb (*this);
     }
-  } else {
-    int denied_position = getPosition();
-    position = last_position;
-    if (denied_position < lower_bound && lower_cb != NULL) lower_cb (*this);
-    if (denied_position > upper_bound && upper_cb != NULL) upper_cb (*this);
   }
 }
 

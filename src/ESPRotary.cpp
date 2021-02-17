@@ -106,7 +106,7 @@ int ESPRotary::getPosition() {
 /////////////////////////////////////////////////////////////////
 
 void ESPRotary::setPosition(int new_position) {
-  position = new_position * moves_per_click;
+  position = new_position * steps_per_click;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -129,7 +129,7 @@ void ESPRotary::loop() {
       position -= 2; break;
   }
   state = (s >> 2);
-  
+
   if (position != last_position && (abs(position - last_position) >= steps_per_click)) {
     int current_position = getPosition();
     if (current_position >= lower_bound && current_position <= upper_bound) {

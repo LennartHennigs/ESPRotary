@@ -52,6 +52,7 @@ class ESPRotary {
     void setLeftRotationHandler(CallbackFunction f);
     void setUpperOverflowHandler(CallbackFunction f);
     void setLowerOverflowHandler(CallbackFunction f);
+    void setPosition(int new_position);
 
     void loop();
 };

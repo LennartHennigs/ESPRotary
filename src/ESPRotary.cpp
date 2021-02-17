@@ -105,6 +105,12 @@ int ESPRotary::getPosition() {
 
 /////////////////////////////////////////////////////////////////
 
+void ESPRotary::setPosition(int new_position) {
+  position = new_position * moves_per_click;
+}
+
+/////////////////////////////////////////////////////////////////
+
 void ESPRotary::loop() {
   int s = state & 3;
   if (digitalRead(pin1)) s |= 4;

@@ -2,7 +2,7 @@ ESPRotary
 ==========
 
 * Author: Lennart Hennigs (https://www.lennarthennigs.de)
-* Copyright (C) 2020 Lennart Hennigs.
+* Copyright (C) 2017-2021 Lennart Hennigs.
 * Released under the MIT license.
 
 Arduino Library to simplify reading rotary encoder data.
@@ -18,18 +18,14 @@ Some of the code based on the library by PJRC (https://www.pjrc.com/teensy/td_li
 How to Use
 ----------
 
+
+It does not detect the button click - 
+
 These are the constructor and the member functions the library provides:
 
 ```
 // If you have an encoder which increments multiple times per click, adjust steps_per_click
-    ESPRotary(
-        int pin1,
-        int pin2,
-        int steps_per_click = 1,
-        int lower_bound = INT16_MIN,
-        int upper_bound = INT16_MAX,
-        int inital_pos = 0
-        );
+    ESPRotary(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int inital_pos = 0);
 
     void setChangedHandler(CallbackFunction f);
     void setRightRotationHandler(CallbackFunction f);

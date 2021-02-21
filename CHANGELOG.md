@@ -1,5 +1,9 @@
 # Changelog
+
 ## Unreleased
+-
+
+## [1.4.2] - 2020-11-29
 - remove unused variable `last_read_ms` as pointed out by [ornea](https://github.com/ornea) in [#26](https://github.com/LennartHennigs/ESPRotary/issues/26)
 - cleaned up the protected vars as suggested by [Jim-2249](https://github.com/Jim-2249) in [#30](https://github.com/LennartHennigs/ESPRotary/issues/30)
 - simplified the `loop()` function

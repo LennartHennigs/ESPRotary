@@ -18,8 +18,11 @@ Some of the code based on the library by PJRC (https://www.pjrc.com/teensy/td_li
 How to Use
 ----------
 
+The library provides several callback handlers to be notified when the rotary encoder position changes.
 
-It does not detect the button click - 
+It does not detect the button click - you have to use a seperate library for this, e.g. [Button2](https://github.com/LennartHennigs/Button2).
+
+**Note:** For the class to work, you need to call the `loop()` member function in your sketch's `loop()` function. See the example for more details.
 
 These are the constructor and the member functions the library provides:
 
@@ -44,11 +47,6 @@ These are the constructor and the member functions the library provides:
 
     void loop();
 ```
-
-The library provides several callback handlers to be notified when the rotary encoder position changes.
-
-**Note:** For the class to work, you need to call the `loop()` member function in your sketch's `loop()` function. See the example for more details.
-
 
 Installation
 ------------

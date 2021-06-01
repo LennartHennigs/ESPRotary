@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
--
+- Added option to define increment as suggested by [sblaisot](https://github.com/sblaisot) in pull request [#32](https://github.com/LennartHennigs/ESPRotary/pull/32)
 
 ## [1.4.2] - 2020-11-29
 - remove unused variable `last_read_ms` as pointed out by [ornea](https://github.com/ornea) in [#26](https://github.com/LennartHennigs/ESPRotary/issues/26)
@@ -10,14 +10,14 @@
 
 ## [1.4.1] - 2020-11-29
 - reordered the constructor parameters to mitigate a code breaking change as suggested by [ab-it](https://github.com/ab-it) in pull request [#25](https://github.com/LennartHennigs/ESPRotary/pull/25)
-- made ```resetPosition()``` callback trigger optional as suggested by [ab-it](https://github.com/ab-it) 
-- fixed bug in ```directionToString()``` introduced in the 1.4 version, found by [ab-it](https://github.com/ab-it) 
+- made ```resetPosition()``` callback trigger optional as suggested by [ab-it](https://github.com/ab-it)
+- fixed bug in ```directionToString()``` introduced in the 1.4 version, found by [ab-it](https://github.com/ab-it)
 
 ## [1.4] - 2020-11-26
 - added callback to ```resetPosition()``` as suggested by [ab-it](https://github.com/ab-it) in [#17](https://github.com/LennartHennigs/ESPRotary/issues/17)
 - Fixed warning in ```directionToString()``` as suggested by [ab-it](https://github.com/ab-it) in [#18](https://github.com/LennartHennigs/ESPRotary/issues/18)
 - Added option to define initial value in the constructor as suggested by [ab-it](https://github.com/ab-it) in [#20](https://github.com/LennartHennigs/ESPRotary/issues/20)
-- Fixed upper_bound overflow preventing exemple to work on arduino Uno as suggested by [sblaisot](https://github.com/sblaisot) in pull request [#22](https://github.com/LennartHennigs/ESPRotary/pull/22) 
+- Fixed upper_bound overflow preventing exemple to work on arduino Uno as suggested by [sblaisot](https://github.com/sblaisot) in pull request [#22](https://github.com/LennartHennigs/ESPRotary/pull/22)
 - Avoid triggering change_cb after resetPosition to other position than 0
 
 ## [1.3] - 2020-06-05

@@ -1,7 +1,18 @@
 # Changelog
 
 ## Unreleased
+- 
+
+## [1.5.0] - 2021-06-22
 - Added option to define increment as suggested by [sblaisot](https://github.com/sblaisot) in pull request [#32](https://github.com/LennartHennigs/ESPRotary/pull/32)
+- Added a `begin()` function and a default constructor the be able to instantiate an object within a function
+- Updated the `RangedCounter` and `SimpleCounterWithButton` examples. They now use `begin()`
+- Added getter and setter functions for the upper and lower bounds
+    - ```void setUpperBound(int upper_bound);```
+    - ```void setLowerBound(int lower_bound);```
+    - ```int getUpperBound();```
+    - ```int getLowerBound();```
+
 
 ## [1.4.2] - 2020-11-29
 - remove unused variable `last_read_ms` as pointed out by [ornea](https://github.com/ornea) in [#26](https://github.com/LennartHennigs/ESPRotary/issues/26)

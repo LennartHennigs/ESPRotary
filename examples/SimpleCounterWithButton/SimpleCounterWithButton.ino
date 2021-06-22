@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////
 
-#include "Button2.h"; //  https://github.com/LennartHennigs/Button2
-#include "ESPRotary.h";
+#include "Button2.h" //  https://github.com/LennartHennigs/Button2
+#include "ESPRotary.h"
 
 /////////////////////////////////////////////////////////////////
 

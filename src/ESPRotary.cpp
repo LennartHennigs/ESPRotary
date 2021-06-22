@@ -9,19 +9,54 @@
 
 /////////////////////////////////////////////////////////////////
 
+ESPRotary::ESPRotary() {
+}
+
+/////////////////////////////////////////////////////////////////
+
 ESPRotary::ESPRotary(byte pin1, byte pin2, byte steps_per_click /* = 1 */,  int lower_bound /* = INT16_MIN */, int upper_bound /* = INT16_MAX */, int inital_pos /* = 0 */, int increment /* = 1 */) {
+  begin(pin1, pin2, steps_per_click, lower_bound, upper_bound, inital_pos, increment);
+}
+
+/////////////////////////////////////////////////////////////////
+
+void ESPRotary::begin(byte pin1, byte pin2, byte steps_per_click /* = 1 */,  int lower_bound /* = INT16_MIN */, int upper_bound /* = INT16_MAX */, int inital_pos /* = 0 */, int increment /* = 1 */) {
   this->pin1 = pin1;
   this->pin2 = pin2;
-  this->lower_bound = (lower_bound < upper_bound) ? lower_bound : upper_bound;
-  this->upper_bound = (lower_bound < upper_bound) ? upper_bound: lower_bound;
-  setIncrement(increment);
-  setStepsPerClick(steps_per_click);
-
   pinMode(pin1, INPUT_PULLUP);
   pinMode(pin2, INPUT_PULLUP);
 
+  setUpperBound(upper_bound);
+  setLowerBound(lower_bound);
+  setIncrement(increment);
+  setStepsPerClick(steps_per_click);
+  
   loop();
   resetPosition(inital_pos, false);
+}
+
+/////////////////////////////////////////////////////////////////
+
+void ESPRotary::setUpperBound(int upper_bound) {
+  this->upper_bound = (lower_bound < upper_bound) ? upper_bound: lower_bound;
+}
+
+/////////////////////////////////////////////////////////////////
+
+void ESPRotary::setLowerBound(int lower_bound) {
+  this->lower_bound = (lower_bound < upper_bound) ? lower_bound : upper_bound;
+}
+
+/////////////////////////////////////////////////////////////////
+
+int ESPRotary::getUpperBound() {
+  return this->upper_bound;
+}
+
+/////////////////////////////////////////////////////////////////
+
+int ESPRotary::getLowerBound() {
+  return this->lower_bound;
 }
 
 /////////////////////////////////////////////////////////////////

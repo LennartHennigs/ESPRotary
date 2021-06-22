@@ -14,8 +14,8 @@
 
 /////////////////////////////////////////////////////////////////
 
-ESPRotary r = ESPRotary(ROTARY_PIN1, ROTARY_PIN2, CLICKS_PER_STEP);
-Button2 b = Button2(BUTTON_PIN);
+ESPRotary r;
+Button2 b;
 
 /////////////////////////////////////////////////////////////////
 
@@ -24,10 +24,12 @@ void setup() {
   delay(50);
   Serial.println("\n\nSimple Counter");
   
+  r.begin(ROTARY_PIN1, ROTARY_PIN2, CLICKS_PER_STEP);
   r.setChangedHandler(rotate);
   r.setLeftRotationHandler(showDirection);
   r.setRightRotationHandler(showDirection);
 
+  b.begin(BUTTON_PIN);
   b.setTapHandler(click);
   b.setLongClickHandler(resetPosition);
 }

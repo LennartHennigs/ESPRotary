@@ -1,5 +1,10 @@
 ESPRotary	KEYWORD1
 getPosition	KEYWORD2
+begin	KEYWORD2
+setUpperBound	KEYWORD2
+setLowerBound	KEYWORD2
+getUpperBound	KEYWORD2
+getLowerBound	KEYWORD2
 resetPosition	KEYWORD2
 getDirection	KEYWORD2
 getIncrement	KEYWORD2

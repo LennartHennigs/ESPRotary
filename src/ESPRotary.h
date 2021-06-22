@@ -45,7 +45,9 @@ class ESPRotary {
 
    int getPosition();
    void resetPosition(int p = 0, bool fireCallback = true);
+
    byte getDirection();
+   String directionToString(byte direction);
 
    void setIncrement(int inc);
    int getIncrement();
@@ -57,8 +59,6 @@ class ESPRotary {
 
    void setStepsPerClick(int steps);
    int getStepsPerClick();
-
-   String directionToString(byte direction);
    
    void setChangedHandler(CallbackFunction f);
    void setRightRotationHandler(CallbackFunction f);

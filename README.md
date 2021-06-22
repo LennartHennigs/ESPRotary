@@ -14,7 +14,7 @@ Description
 This library allows you read out interactions with a rotary encoder and act on them. 
 It uses callback functions to be notified when the rotary encoder changes.
 
-Some of the code based of this library is based on code from PJRC (https://www.pjrc.com/teensy/td_libs_Encoder.html).
+Some of the code based of this library is based on code from [PJRC](https://www.pjrc.com/teensy/td_libs_Encoder.html).
 
 
 How to Use

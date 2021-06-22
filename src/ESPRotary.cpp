@@ -9,11 +9,12 @@
 
 /////////////////////////////////////////////////////////////////
 
-ESPRotary::ESPRotary(byte pin1, byte pin2, byte steps_per_click /* = 1 */,  int lower_bound /* = INT16_MIN */, int upper_bound /* = INT16_MAX */, int inital_pos /* = 0 */) {
+ESPRotary::ESPRotary(byte pin1, byte pin2, byte steps_per_click /* = 1 */,  int lower_bound /* = INT16_MIN */, int upper_bound /* = INT16_MAX */, int inital_pos /* = 0 */, int increment /* = 1 */) {
   this->pin1 = pin1;
   this->pin2 = pin2;
   this->lower_bound = (lower_bound < upper_bound) ? lower_bound : upper_bound;
   this->upper_bound = (lower_bound < upper_bound) ? upper_bound: lower_bound;
+  setIncrement(increment);
   setStepsPerClick(steps_per_click);
 
   pinMode(pin1, INPUT_PULLUP);
@@ -71,6 +72,18 @@ void ESPRotary::resetPosition(int p /* = 0 */, bool fireCallback /* = true */) {
 
 /////////////////////////////////////////////////////////////////
 
+void ESPRotary::setIncrement(int inc) {
+  increment = inc;
+}
+
+/////////////////////////////////////////////////////////////////
+
+int ESPRotary::getIncrement() {
+  return increment;
+}
+
+/////////////////////////////////////////////////////////////////
+
 void ESPRotary::setStepsPerClick(int steps) {
   steps_per_click = (steps < 1) ? 1 : steps;
 }
@@ -114,17 +127,17 @@ void ESPRotary::loop() {
     case 0: case 5: case 10: case 15:
       break;
     case 1: case 7: case 8: case 14:
-        position++; break;
+        position += increment; break;
     case 2: case 4: case 11: case 13:
-      position--; break;
+      position -= increment; break;
     case 3: case 12:
-      position += 2; break;
+      position += 2 * increment; break;
     default:
-      position -= 2; break;
+      position -= 2 * increment; break;
   }
   state = (s >> 2);
-  
-  if (position != last_position && (abs(position - last_position) >= steps_per_click)) {
+
+  if (position != last_position && (abs(position - last_position) >= steps_per_click * increment)) {
     int current_position = getPosition();
     if (current_position >= lower_bound && current_position <= upper_bound) {
       if (position > last_position) {

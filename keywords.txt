@@ -2,6 +2,8 @@ ESPRotary	KEYWORD1
 getPosition	KEYWORD2
 resetPosition	KEYWORD2
 getDirection	KEYWORD2
+getIncrement	KEYWORD2
+setIncrement	KEYWORD2
 getStepsPerClick	KEYWORD2
 setStepsPerClick	KEYWORD2
 directionToString	KEYWORD2

@@ -28,6 +28,7 @@ class ESPRotary {
     int position, last_position;
     byte direction;
     byte state;
+    int increment;
 
     typedef void (*CallbackFunction) (ESPRotary&);
     CallbackFunction change_cb = NULL;
@@ -37,11 +38,14 @@ class ESPRotary {
     CallbackFunction upper_cb = NULL;
 
  public:
-    ESPRotary(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int inital_pos = 0);
+    ESPRotary(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int inital_pos = 0, int increment = 1);
 
     int getPosition();
     void resetPosition(int p = 0, bool fireCallback = true);
     byte getDirection();
+
+    void setIncrement(int inc);
+    int getIncrement();
 
     void setStepsPerClick(int steps);
     int getStepsPerClick();

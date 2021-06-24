@@ -21,44 +21,44 @@ How to Use
 ----------
 
 __Definition__
-- Use the `begin();` or the parameterized constructor to create a new instance of the class
+- Use the `begin()` or the parameterized constructor to create a new instance of the class
 - Encoder produce different numbers of "click" on a single turn. 
 - You can specify the number of clicks in the constructor, or via a setter function
-    - ```void setStepsPerClick(int steps);```
-    - ```int getStepsPerClick();```
+    - ```void setStepsPerClick(int steps)```
+    - ```int getStepsPerClick() const```
 
 
 __Callback Handlers__
 - The library provides several callback handlers to detect events
-    - ```void setChangedHandler(CallbackFunction f);```
-    - ```void setRightRotationHandler(CallbackFunction f);```
-    - ```void setLeftRotationHandler(CallbackFunction f);```
-    - ```void setUpperOverflowHandler(CallbackFunction f);```
-    - ```void setLowerOverflowHandler(CallbackFunction f);```
+    - ```void setChangedHandler(CallbackFunction f)```
+    - ```void setRightRotationHandler(CallbackFunction f)```
+    - ```void setLeftRotationHandler(CallbackFunction f)```
+    - ```void setUpperOverflowHandler(CallbackFunction f)```
+    - ```void setLowerOverflowHandler(CallbackFunction f)```
 - The library does not detect button clicks. You have to use a seperate library for this, e.g. [Button2](https://github.com/LennartHennigs/Button2).
 
 
 __Ranges__
 - In the constructor you can define an upper and a lower treshhold. The encoder value will not be bypass  these values.
 - There are also getter and setter functions the these values
-    - ```void setUpperBound(int upper_bound);```
-    - ```void setLowerBound(int lower_bound);```
-    - ```int getUpperBound();```
-    - ```int getLowerBound();```
+    - ```void setUpperBound(int upper_bound)```
+    - ```void setLowerBound(int lower_bound)```
+    - ```int getUpperBound() const```
+    - ```int getLowerBound() const```
 
 
 __Reading out information__
 - The class allows you the get the position and the direction after a click using these function:
-    - ```int getPosition();```
-    - ```byte getDirection();```
-    - ```String directionToString(byte direction);```
+    - ```int getPosition() const```
+    - ```byte getDirection() const```
+    - ```String directionToString(byte direction) const```
 
 
 __Speed__
 - You can define the speed, i.e. the increment the a single click in the constructor
 - There is also a getter and setter function for this
     - ```void setIncrement(int inc);```
-    - ```int getIncrement();```
+    - ```int getIncrement() const```
 
 
 __The Loop__
@@ -71,7 +71,8 @@ Notes
 
 - To see the latest changes to the library please take a look at the [Changelog](https://github.com/LennartHennigs/ESPRotary/blob/master/CHANGELOG.md).
  
-- And if you find this library helpful, please consider giving it a star at [GitHub](https://github.com/LennartHennigs/ESPRotary). Thanks!
+- And if you find this library helpful, please consider giving it a star at [GitHub](https://github.com/LennartHennigs/ESPRotary).  
+Thanks!
 
 
 
@@ -86,22 +87,22 @@ These are the constructor and the member functions the library provides:
 
     void begin(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int inital_pos = 0, int increment = 1);
 
-    int getPosition();
+    int getPosition() const;
     void resetPosition(int p = 0, bool fireCallback = true);
 
-    byte getDirection();
-    String directionToString(byte direction);
+    byte getDirection() const;
+    String directionToString(byte direction) const;
 
     void setIncrement(int inc);
-    int getIncrement();
+    int getIncrement() const;
 
     void setUpperBound(int upper_bound);
     void setLowerBound(int lower_bound);
-    int getUpperBound();
-    int getLowerBound();
+    int getUpperBound() const;
+    int getLowerBound() const;
 
     void setStepsPerClick(int steps);
-    int getStepsPerClick();
+    int getStepsPerClick() const;
 
     void setChangedHandler(CallbackFunction f);
     void setRightRotationHandler(CallbackFunction f);
@@ -123,7 +124,7 @@ License
 
 MIT License
 
-Copyright (c) 2017-2020 Lennart Hennigs
+Copyright (c) 2017-2021 Lennart Hennigs
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

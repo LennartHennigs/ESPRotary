@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- 
+- Defined getter methods as ```const```
 
 ## [1.5.0] - 2021-06-22
 - Added option to define increment as suggested by [sblaisot](https://github.com/sblaisot) in pull request [#32](https://github.com/LennartHennigs/ESPRotary/pull/32)

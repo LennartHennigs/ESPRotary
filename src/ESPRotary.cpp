@@ -49,13 +49,13 @@ void ESPRotary::setLowerBound(int lower_bound) {
 
 /////////////////////////////////////////////////////////////////
 
-int ESPRotary::getUpperBound() {
+int ESPRotary::getUpperBound() const {
   return this->upper_bound;
 }
 
 /////////////////////////////////////////////////////////////////
 
-int ESPRotary::getLowerBound() {
+int ESPRotary::getLowerBound() const {
   return this->lower_bound;
 }
 
@@ -113,7 +113,7 @@ void ESPRotary::setIncrement(int inc) {
 
 /////////////////////////////////////////////////////////////////
 
-int ESPRotary::getIncrement() {
+int ESPRotary::getIncrement() const {
   return increment;
 }
 
@@ -125,19 +125,19 @@ void ESPRotary::setStepsPerClick(int steps) {
 
 /////////////////////////////////////////////////////////////////
 
-int ESPRotary::getStepsPerClick() {
+int ESPRotary::getStepsPerClick() const {
   return steps_per_click;
 }
 
 /////////////////////////////////////////////////////////////////
 
-byte ESPRotary::getDirection() {
+byte ESPRotary::getDirection() const {
   return direction;
 }
 
 /////////////////////////////////////////////////////////////////
 
-String ESPRotary::directionToString(byte direction) {
+String ESPRotary::directionToString(byte direction) const {
   if (direction == RE_LEFT) {
     return "LEFT";
   } else {
@@ -147,7 +147,7 @@ String ESPRotary::directionToString(byte direction) {
 
 /////////////////////////////////////////////////////////////////
 
-int ESPRotary::getPosition() {
+int ESPRotary::getPosition() const {
   return position / steps_per_click;
 }
 

@@ -67,6 +67,7 @@ Some of the code based of this library is based on code from [PJRC](https://www.
 - Each enocder instance gets a unique (auto incremented) ID upon creation.
 - You can get a encoders' ID via `getID()`.
 - Alternatively, you can use `setID(int newID)` to set a new one. But then you need to make sure that they are unique.
+- You can also use the `==` operator to compare encoders
 
 ## Notes
 

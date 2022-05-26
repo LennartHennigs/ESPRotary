@@ -1,6 +1,6 @@
 {
 	"name": "ESP Rotary",
-	"version": "1.5.0",
+	"version": "1.6.0",
 	"keywords": "rotary encoder, esp8266",
 	"description": "ESP8266/Arduino Library for reading rotary encoder values.",
 	"homepage": "https://github.com/LennartHennigs/ESPRotary",

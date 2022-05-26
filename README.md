@@ -1,87 +1,77 @@
-ESPRotary
-==========
+# ESPRotary
 
-* Author: Lennart Hennigs (https://www.lennarthennigs.de)
-* Copyright (C) 2017-2021 Lennart Hennigs.
-* Released under the MIT license.
+- Author: Lennart Hennigs (<https://www.lennarthennigs.de>)
+-_Copyright (C) 2017-2021 Lennart Hennigs.
+- Released under the MIT license.
 
 Arduino Library to simplify reading rotary encoder data.
 Tested with Arduino, ESP8266 and ESP32.
 
-Description
------------
+## Description
 
-This library allows you read out interactions with a rotary encoder and act on them. 
+This library allows you read out interactions with a rotary encoder and act on them.
 It uses callback functions to be notified when the rotary encoder changes.
 
 Some of the code based of this library is based on code from [PJRC](https://www.pjrc.com/teensy/td_libs_Encoder.html).
 
+## How to Use
 
-How to Use
-----------
+### Definition
 
-__Definition__
 - Use the `begin()` or the parameterized constructor to create a new instance of the class
-- Encoder produce different numbers of "click" on a single turn. 
+- Encoder produce different numbers of "click" on a single turn.
 - You can specify the number of clicks in the constructor, or via a setter function
-    - ```void setStepsPerClick(int steps)```
-    - ```int getStepsPerClick() const```
+  - ```void setStepsPerClick(int steps)```
+  - ```int getStepsPerClick() const```
 
+### Callback Handlers
 
-__Callback Handlers__
 - The library provides several callback handlers to detect events
-    - ```void setChangedHandler(CallbackFunction f)```
-    - ```void setRightRotationHandler(CallbackFunction f)```
-    - ```void setLeftRotationHandler(CallbackFunction f)```
-    - ```void setUpperOverflowHandler(CallbackFunction f)```
-    - ```void setLowerOverflowHandler(CallbackFunction f)```
+  - ```void setChangedHandler(CallbackFunction f)```
+  - ```void setRightRotationHandler(CallbackFunction f)```
+  - ```void setLeftRotationHandler(CallbackFunction f)```
+  - ```void setUpperOverflowHandler(CallbackFunction f)```
+  - ```void setLowerOverflowHandler(CallbackFunction f)```
 - The library does not detect button clicks. You have to use a seperate library for this, e.g. [Button2](https://github.com/LennartHennigs/Button2).
 
+### Ranges
 
-__Ranges__
 - In the constructor you can define an upper and a lower treshhold. The encoder value will not be bypass  these values.
 - There are also getter and setter functions the these values
-    - ```void setUpperBound(int upper_bound)```
-    - ```void setLowerBound(int lower_bound)```
-    - ```int getUpperBound() const```
-    - ```int getLowerBound() const```
+  - ```void setUpperBound(int upper_bound)```
+  - ```void setLowerBound(int lower_bound)```
+  - ```int getUpperBound() const```
+  - ```int getLowerBound() const```
 
+### Reading out information
 
-__Reading out information__
 - The class allows you the get the position and the direction after a click using these function:
-    - ```int getPosition() const```
-    - ```byte getDirection() const```
-    - ```String directionToString(byte direction) const```
+  - ```int getPosition() const```
+  - ```byte getDirection() const```
+  - ```String directionToString(byte direction) const```
 
+### Speed
 
-__Speed__
 - You can define the speed, i.e. the increment the a single click in the constructor
 - There is also a getter and setter function for this
-    - ```void setIncrement(int inc);```
-    - ```int getIncrement() const```
+  - ```void setIncrement(int inc);```
+  - ```int getIncrement() const```
 
+### The Loop
 
-__The Loop__
 - For the class to work, you need to call the `loop()` member function in your sketch's `loop()` function.
 - See the examples for more details.
 
-
-Notes
------
+## Notes
 
 - To see the latest changes to the library please take a look at the [Changelog](https://github.com/LennartHennigs/ESPRotary/blob/master/CHANGELOG.md).
- 
-- And if you find this library helpful, please consider giving it a star at [GitHub](https://github.com/LennartHennigs/ESPRotary).  
-Thanks!
+- And if you find this library helpful, please consider giving it a star at [GitHub](<https://github.com/LennartHennigs/ESPRotary>.  Thanks!
 
-
-
-Class Definition
-----------------
+## Class Definition
 
 These are the constructor and the member functions the library provides:
 
-```
+``` c++
     ESPRotary();
     ESPRotary(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int inital_pos = 0, int increment = 1);
 
@@ -113,18 +103,16 @@ These are the constructor and the member functions the library provides:
     void loop();
 ```
 
-Installation
-------------
+## Installation
+
 Open the Arduino IDE choose "Sketch > Include Library" and search for "ESP Rotary".
-Or download the ZIP archive (https://github.com/lennarthennigs/ESPRotary/zipball/master), and choose "Sketch > Include Library > Add .ZIP Library..." and select the downloaded file.
+Or download the ZIP archive (<https://github.com/lennarthennigs/ESPRotary/zipball/master>), and choose "Sketch > Include Library > Add .ZIP Library..." and select the downloaded file.
 
-
-License
--------
+## License
 
 MIT License
 
-Copyright (c) 2017-2021 Lennart Hennigs
+Copyright (c) 2017-2022 Lennart Hennigs
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

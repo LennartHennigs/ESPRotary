@@ -1,16 +1,19 @@
 # ESPRotary
 
+Arduino/ESP library to simplify reading rotary encoder data.
+
 - Author: Lennart Hennigs (<https://www.lennarthennigs.de>)
 - Copyright (C) 2017-2022 Lennart Hennigs.
 - Released under the MIT license.
-
-Arduino Library to simplify reading rotary encoder data.
-Tested with Arduino, ESP8266 and ESP32.
 
 ## Description
 
 This library allows you read out interactions with a rotary encoder and act on them.
 It uses callback functions to be notified when the rotary encoder changes.
+
+It has been tested with Arduino, ESP8266 and ESP32 devices.
+
+To see the latest changes to the library please take a look at the [Changelog](https://github.com/LennartHennigs/ESPRotary/blob/master/CHANGELOG.md).
 
 Some of the code based of this library is based on code from [PJRC](https://www.pjrc.com/teensy/td_libs_Encoder.html).
 

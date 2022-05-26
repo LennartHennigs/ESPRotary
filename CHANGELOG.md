@@ -5,7 +5,7 @@
 ## [1.6.0] - 2022-05-26
 
 - added ID feature to the class as suggested by [Jon](https://github.com/mscreations) in [#34](https://github.com/LennartHennigs/ESPRotary/pull/34)
-- added == operator as suggested by [Jon](https://github.com/mscreations) in [#34](https://github.com/LennartHennigs/
+- added == operator as suggested by [Jon](https://github.com/mscreations) in [#34](<https://github.com/LennartHennigs/>
 - Defined getter methods as ```const```
 
 ## [1.5.0] - 2021-06-22

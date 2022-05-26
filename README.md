@@ -1,7 +1,7 @@
 # ESPRotary
 
 - Author: Lennart Hennigs (<https://www.lennarthennigs.de>)
--_Copyright (C) 2017-2021 Lennart Hennigs.
+-_Copyright (C) 2017-2022 Lennart Hennigs.
 - Released under the MIT license.
 
 Arduino Library to simplify reading rotary encoder data.
@@ -61,6 +61,12 @@ Some of the code based of this library is based on code from [PJRC](https://www.
 
 - For the class to work, you need to call the `loop()` member function in your sketch's `loop()` function.
 - See the examples for more details.
+
+### IDs for Encoder Instances
+
+- Each enocder instance gets a unique (auto incremented) ID upon creation.
+- You can get a encoders' ID via `getID()`.
+- Alternatively, you can use `setID(int newID)` to set a new one. But then you need to make sure that they are unique.
 
 ## Notes
 

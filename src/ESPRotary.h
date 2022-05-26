@@ -22,6 +22,7 @@
 
 class ESPRotary {
  protected:
+   int id;
    byte pin1, pin2;
    byte steps_per_click;
    int lower_bound, upper_bound;
@@ -66,7 +67,15 @@ class ESPRotary {
    void setUpperOverflowHandler(CallbackFunction f);
    void setLowerOverflowHandler(CallbackFunction f);
 
+   int getID() const;
+   void setID(int newID);
+
+   bool operator == (ESPRotary &rhs);
+
    void loop();
+
+ private:
+   static int _nextID;
 };
 
 /////////////////////////////////////////////////////////////////

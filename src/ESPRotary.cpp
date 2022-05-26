@@ -8,13 +8,20 @@
 #include "ESPRotary.h"
 
 /////////////////////////////////////////////////////////////////
+// initialize static counter
+
+int ESPRotary::_nextID = 0;
+
+/////////////////////////////////////////////////////////////////
 
 ESPRotary::ESPRotary() {
+  id = _nextID++;
 }
 
 /////////////////////////////////////////////////////////////////
 
 ESPRotary::ESPRotary(byte pin1, byte pin2, byte steps_per_click /* = 1 */,  int lower_bound /* = INT16_MIN */, int upper_bound /* = INT16_MAX */, int inital_pos /* = 0 */, int increment /* = 1 */) {
+  id = _nextID++;
   begin(pin1, pin2, steps_per_click, lower_bound, upper_bound, inital_pos, increment);
 }
 
@@ -149,6 +156,24 @@ String ESPRotary::directionToString(byte direction) const {
 
 int ESPRotary::getPosition() const {
   return position / steps_per_click;
+}
+
+/////////////////////////////////////////////////////////////////
+
+int ESPRotary::getID() const {
+  return id;
+}
+
+/////////////////////////////////////////////////////////////////
+
+void ESPRotary::setID(int newID) {
+  id = newID;
+}
+
+/////////////////////////////////////////////////////////////////
+
+bool ESPRotary::operator == (ESPRotary &rhs) {
+  return (this == &rhs);
 }
 
 /////////////////////////////////////////////////////////////////

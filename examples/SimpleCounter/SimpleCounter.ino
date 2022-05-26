@@ -9,7 +9,7 @@
 
 /////////////////////////////////////////////////////////////////
 
-ESPRotary r = ESPRotary(ROTARY_PIN1, ROTARY_PIN2);
+ESPRotary r;
 
 /////////////////////////////////////////////////////////////////
 
@@ -18,6 +18,7 @@ void setup() {
   delay(50);
   Serial.println("\n\nSimple Counter");
   
+  r.begin(ROTARY_PIN1, ROTARY_PIN2);
   r.setChangedHandler(rotate);
   r.setLeftRotationHandler(showDirection);
   r.setRightRotationHandler(showDirection);

@@ -15,6 +15,8 @@ It has been tested with Arduino, ESP8266 and ESP32 devices.
 
 To see the latest changes to the library please take a look at the [Changelog](https://github.com/LennartHennigs/ESPRotary/blob/master/CHANGELOG.md).
 
+If you find this library helpful please consider giving it a ⭐️ at [GitHub](https://github.com/LennartHennigs/ESPRotary) and/or [buy me a ☕️](https://ko-fi.com/lennart0815). Thanks!
+
 Some of the code based of this library is based on code from [PJRC](https://www.pjrc.com/teensy/td_libs_Encoder.html).
 
 ## How to Use

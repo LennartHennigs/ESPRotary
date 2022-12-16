@@ -196,25 +196,32 @@ void ESPRotary::loop() {
       position -= 2 * increment; break;
   }
   state = (s >> 2);
+  // did it change?
+  if (position == last_position) return;
+  // did it change enough?
+  if (abs(position - last_position) < steps_per_click * increment) return;
 
-  if (position != last_position && (abs(position - last_position) >= steps_per_click * increment)) {
-    int current_position = getPosition();
-    if (current_position >= lower_bound && current_position <= upper_bound) {
-      if (position > last_position) {
-        direction = RE_RIGHT;
-        if (right_cb != NULL) right_cb (*this);
-      } else {
-        direction = RE_LEFT;
-        if (left_cb != NULL) left_cb (*this);
-      }
-      last_position = position;
-      if (change_cb != NULL) change_cb (*this);
-    } else {
-      position = last_position;
-      if (current_position < lower_bound && lower_cb != NULL) lower_cb (*this);
-      if (current_position > upper_bound && upper_cb != NULL) upper_cb (*this);
-    }
+  int current_position = getPosition();
+  
+  // are we within bounds?
+  if (current_position < lower_bound) {
+    if (lower_cb != NULL) lower_cb (*this);
+    return;
   }
+  if (current_position > upper_bound) {
+    if (upper_cb != NULL) upper_cb (*this);
+    return;
+  }
+
+  if (position > last_position) {
+    direction = RE_RIGHT;
+    if (right_cb != NULL) right_cb (*this);
+  } else {
+    direction = RE_LEFT;
+    if (left_cb != NULL) left_cb (*this);
+  }
+  last_position = position;
+  if (change_cb != NULL) change_cb (*this);
 }
 
 /////////////////////////////////////////////////////////////////

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- replaced direction constants with enum
+
 ## [1.6.0] - 2022-05-26
 
 - added ID feature to the class as suggested by [Jon](https://github.com/mscreations) in [#34](https://github.com/LennartHennigs/ESPRotary/pull/34)

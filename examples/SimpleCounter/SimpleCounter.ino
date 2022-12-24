@@ -4,8 +4,11 @@
 
 /////////////////////////////////////////////////////////////////
 
-#define ROTARY_PIN1	14
-#define ROTARY_PIN2	12
+#define ROTARY_PIN1	D1
+#define ROTARY_PIN2	D2
+
+// this number depends on your rotary encoder
+#define CLICKS_PER_STEP 4   
 
 /////////////////////////////////////////////////////////////////
 
@@ -18,7 +21,7 @@ void setup() {
   delay(50);
   Serial.println("\n\nSimple Counter");
   
-  r.begin(ROTARY_PIN1, ROTARY_PIN2);
+  r.begin(ROTARY_PIN1, ROTARY_PIN2, CLICKS_PER_STEP);
   r.setChangedHandler(rotate);
   r.setLeftRotationHandler(showDirection);
   r.setRightRotationHandler(showDirection);

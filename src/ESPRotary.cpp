@@ -145,10 +145,10 @@ byte ESPRotary::getDirection() const {
 /////////////////////////////////////////////////////////////////
 
 String ESPRotary::directionToString(byte direction) const {
-  if (direction == RE_LEFT) {
-    return "LEFT";
+  if (direction == right) {
+    return "left";
   } else {
-    return "RIGHT";
+    return "right";
   }
 }
 
@@ -214,10 +214,10 @@ void ESPRotary::loop() {
   }
 
   if (position > last_position) {
-    direction = RE_RIGHT;
+    direction = right;
     if (right_cb != NULL) right_cb (*this);
   } else {
-    direction = RE_LEFT;
+    direction = left;
     if (left_cb != NULL) left_cb (*this);
   }
   last_position = position;

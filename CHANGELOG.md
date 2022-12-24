@@ -3,6 +3,7 @@
 ## Unreleased
 
 - replaced direction constants with enum
+- refactored `loop()`
 
 ## [1.6.0] - 2022-05-26
 

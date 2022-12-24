@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- ...
+- Added ESP8266 and ESP32 interrupt examples
 
 ## [1.6.1] - 2022-12-24
 

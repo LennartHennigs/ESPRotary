@@ -1,0 +1,71 @@
+/////////////////////////////////////////////////////////////////
+
+#if !defined(ESP32)
+  #error This sketch needs an ESP32
+#else
+
+/////////////////////////////////////////////////////////////////
+
+#include "ESPRotary.h"
+#include "Ticker.h" // https://github.com/esp8266/Arduino/tree/master/libraries/Ticker
+
+/////////////////////////////////////////////////////////////////
+
+#define ROTARY_PIN1 14
+#define ROTARY_PIN2 15
+
+#define CLICKS_PER_STEP 4
+
+/////////////////////////////////////////////////////////////////
+
+ESPRotary r;
+hw_timer_t *timer = NULL;
+
+/////////////////////////////////////////////////////////////////
+
+
+void IRAM_ATTR handleLoop() {
+  r.loop();
+}
+
+/////////////////////////////////////////////////////////////////
+
+void setup() {
+  Serial.begin(9600);
+  delay(50);
+
+  r.begin(ROTARY_PIN1, ROTARY_PIN2, CLICKS_PER_STEP);
+  r.setChangedHandler(rotate);
+  r.setLeftRotationHandler(showDirection);
+  r.setRightRotationHandler(showDirection);
+
+
+  timer = timerBegin(0, 80, true);
+  timerAttachInterrupt(timer, &handleLoop, true);
+  timerAlarmWrite(timer, 10000, true); // every 0.1 seconds
+  timerAlarmEnable(timer);
+}
+
+/////////////////////////////////////////////////////////////////
+
+void rotate(ESPRotary& r) {
+   Serial.println(r.getPosition());
+}
+
+/////////////////////////////////////////////////////////////////
+
+// on left or right rotation
+void showDirection(ESPRotary& r) {
+  Serial.println(r.directionToString(r.getDirection()));
+}
+
+/////////////////////////////////////////////////////////////////
+
+void loop() {
+  delay(1000);
+  Serial.print(".");
+}
+
+/////////////////////////////////////////////////////////////////
+#endif
+/////////////////////////////////////////////////////////////////

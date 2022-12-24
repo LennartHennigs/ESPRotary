@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- ...
+
+## [1.6.1] - 2022-12-24
+
 - replaced direction constants with enum
 - refactored `loop()`
 

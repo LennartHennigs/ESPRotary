@@ -70,9 +70,8 @@ Some of the code based of this library is based on code from [PJRC](https://www.
 
 ### Using it with a timer interrupt
 
-- Instead of using the main loop() of your sketch you can also use an interrupt timer function. See 
+- Instead of using the main loop() of your sketch you can also use an interrupt timer function. See
 - See [ESP32Interrupt](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/ESP32Interrupt/ESP32Interrupt.ino) or [ESP8266Interrupt](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/ESP8266Interrupt/ESP8266Interrupt.ino) to see how
-
 
 ### IDs for Encoder Instances
 
@@ -87,12 +86,12 @@ Some of the code based of this library is based on code from [PJRC](https://www.
 - And if you find this library helpful, please consider giving it a star at [GitHub](<https://github.com/LennartHennigs/ESPRotary>.  Thanks!
 
 ## Examples
+
 - [SimpleCounter](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/SimpleCounter/SimpleCounter.ino) - basic example
 - [SimpleCounterWithButton](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/SimpleCounterWithButton/SimpleCounterWithButton.ino) - basic example with a button handler
 - [RangedCounter](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/RangedCounter/RangedCounter.ino) - shows how to define ranges
 - [ESP8266Interrupt](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/ESP8266Interrupt/ESP8266Interrupt.ino) - uses an ESP8266 interrupt instead of the main loop
 - [ESP32Interrupt](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/ESP32Interrupt/ESP32Interrupt.ino) - uses an ESP32 interrupt instead of the main loop
-
 
 ## Class Definition
 

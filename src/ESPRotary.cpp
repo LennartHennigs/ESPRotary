@@ -109,7 +109,7 @@ void ESPRotary::resetPosition(int p /* = 0 */, bool fireCallback /* = true */) {
     position = last_position;
     if (fireCallback && change_cb != NULL) change_cb (*this);
   }
-  direction = 0;
+  dir = undefined;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -138,14 +138,14 @@ int ESPRotary::getStepsPerClick() const {
 
 /////////////////////////////////////////////////////////////////
 
-byte ESPRotary::getDirection() const {
-  return direction;
+direction ESPRotary::getDirection() const {
+  return dir;
 }
 
 /////////////////////////////////////////////////////////////////
 
-String ESPRotary::directionToString(byte direction) const {
-  if (direction == right) {
+String ESPRotary::directionToString(direction dir) const {
+  if (dir == right) {
     return "left";
   } else {
     return "right";
@@ -214,10 +214,10 @@ void ESPRotary::loop() {
   }
 
   if (position > last_position) {
-    direction = right;
+    dir = right;
     if (right_cb != NULL) right_cb (*this);
   } else {
-    direction = left;
+    dir = left;
     if (left_cb != NULL) left_cb (*this);
   }
   last_position = position;

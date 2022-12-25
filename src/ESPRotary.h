@@ -15,7 +15,8 @@
 
 /////////////////////////////////////////////////////////////////
 
-enum dir {
+enum direction {
+  undefined = 0,
   right = 1,
   left = 255
 };
@@ -29,7 +30,7 @@ class ESPRotary {
    byte steps_per_click;
    int lower_bound, upper_bound;
    int position, last_position;
-   byte direction;
+   direction dir;
    byte state;
    int increment;
 
@@ -49,8 +50,8 @@ class ESPRotary {
    int getPosition() const;
    void resetPosition(int p = 0, bool fireCallback = true);
 
-   byte getDirection() const;
-   String directionToString(byte direction) const;
+   direction getDirection() const;
+   String directionToString(direction dir) const;
 
    void setIncrement(int inc);
    int getIncrement() const;

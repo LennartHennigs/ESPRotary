@@ -79,6 +79,9 @@ class ESPRotary {
 
  private:
    static int _nextID;
+
+   void _setID();
+
 };
 
 /////////////////////////////////////////////////////////////////

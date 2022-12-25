@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////
 /*
   ESP8266/Arduino Library for reading rotary encoder values.
-  Copyright 2017-2021 Lennart Hennigs.
+  Copyright 2017-2022 Lennart Hennigs.
 */
 /////////////////////////////////////////////////////////////////
 
@@ -46,31 +46,33 @@ void ESPRotary::begin(byte pin1, byte pin2, byte steps_per_click /* = 1 */,  int
   setStepsPerClick(steps_per_click);
   
   loop();
-  resetPosition(inital_pos, false);
+  steps = inital_pos * steps_per_click;
+  last_event = none;
+  dir = undefined;
 }
 
 /////////////////////////////////////////////////////////////////
 
 void ESPRotary::setUpperBound(int upper_bound) {
-  this->upper_bound = (lower_bound < upper_bound) ? upper_bound: lower_bound;
+  upper_bound = (lower_bound < upper_bound) ? upper_bound: lower_bound;
 }
 
 /////////////////////////////////////////////////////////////////
 
 void ESPRotary::setLowerBound(int lower_bound) {
-  this->lower_bound = (lower_bound < upper_bound) ? lower_bound : upper_bound;
+  lower_bound = (lower_bound < upper_bound) ? lower_bound : upper_bound;
 }
 
 /////////////////////////////////////////////////////////////////
 
 int ESPRotary::getUpperBound() const {
-  return this->upper_bound;
+  return upper_bound;
 }
 
 /////////////////////////////////////////////////////////////////
 
 int ESPRotary::getLowerBound() const {
-  return this->lower_bound;
+  return lower_bound;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -105,17 +107,18 @@ void ESPRotary::setLowerOverflowHandler(CallbackFunction f) {
 
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::resetPosition(int p /* = 0 */, bool fireCallback /* = true */) {
-  if (p > upper_bound) {
-    last_position = upper_bound * steps_per_click;
-  } else {
-    last_position = (lower_bound > p) ? lower_bound * steps_per_click : p * steps_per_click;
-  }
+void ESPRotary::setSpeedupHandler(CallbackFunction f) {
+  speedup_cb = f;
+}
 
-  if (position != last_position) {
-    position = last_position;
-    if (fireCallback && change_cb != NULL) change_cb (*this);
-  }
+/////////////////////////////////////////////////////////////////
+
+void ESPRotary::resetPosition(int p /* = 0 */, bool fireCallback /* = true */) {
+  if (p == getPosition()) return;
+  steps = p * steps_per_click;
+  _isWithinBounds();
+  if (fireCallback && change_cb != NULL) change_cb (*this);
+  last_event = none;
   dir = undefined;
 }
 
@@ -145,24 +148,20 @@ int ESPRotary::getStepsPerClick() const {
 
 /////////////////////////////////////////////////////////////////
 
-direction ESPRotary::getDirection() const {
+rotary_direction ESPRotary::getDirection() const {
   return dir;
 }
 
 /////////////////////////////////////////////////////////////////
 
-String ESPRotary::directionToString(direction dir) const {
-  if (dir == right) {
-    return "left";
-  } else {
-    return "right";
-  }
+String ESPRotary::directionToString(rotary_direction dir) const {
+  return (dir == right) ? "right" : "left";
 }
 
 /////////////////////////////////////////////////////////////////
 
 int ESPRotary::getPosition() const {
-  return position / steps_per_click;
+  return steps / steps_per_click;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -186,49 +185,153 @@ bool ESPRotary::operator == (ESPRotary &rhs) {
 /////////////////////////////////////////////////////////////////
 
 void ESPRotary::loop() {
+  long now = millis();
+  // did it change (enough)?
+  if (!_wasRotated()) return;
+  // get direction
+  dir = (steps > last_steps) ? right : left;
+  // shall I speedup things
+  if (enable_speedup) _checkForSpeedup(now);
+  // are we out of bounds?
+  if (!_isWithinBounds(true)) return;
+  // trigger rotation event  
+  _setEvent((dir == right) ? right_rotation : left_rotation);
+  last_steps = steps;
+  last_turn = now;
+}
+
+/////////////////////////////////////////////////////////////////
+
+bool ESPRotary::_wasRotated() {
   int s = state & 3;
   if (digitalRead(pin1)) s |= 4;
   if (digitalRead(pin2)) s |= 8;
-
   switch (s) {
     case 0: case 5: case 10: case 15:
       break;
     case 1: case 7: case 8: case 14:
-        position += increment; break;
+        steps += increment; break;
     case 2: case 4: case 11: case 13:
-      position -= increment; break;
+      steps -= increment; break;
     case 3: case 12:
-      position += 2 * increment; break;
+      steps += 2 * increment; break;
     default:
-      position -= 2 * increment; break;
+      steps -= 2 * increment; break;
   }
   state = (s >> 2);
-  // did it change?
-  if (position == last_position) return;
-  // did it change enough?
-  if (abs(position - last_position) < steps_per_click * increment) return;
+  return (abs(steps - last_steps) >= steps_per_click * increment);
+}
 
-  int current_position = getPosition();
-  
-  // are we within bounds?
-  if (current_position < lower_bound) {
-    if (lower_cb != NULL) lower_cb (*this);
-    return;
+/////////////////////////////////////////////////////////////////
+
+bool ESPRotary::_isWithinBounds(bool alert /* = false */) {
+  if (steps > upper_bound * steps_per_click) {
+    if (alert) _setEvent(upper_bound_hit);
+    steps = upper_bound * steps_per_click;
+    return false;
+  } else if (steps < lower_bound * steps_per_click) {
+    if (alert)  _setEvent(lower_bound_hit);
+    steps = lower_bound * steps_per_click;
+    return false;
   }
-  if (current_position > upper_bound) {
-    if (upper_cb != NULL) upper_cb (*this);
-    return;
+  return true;
+}
+
+/////////////////////////////////////////////////////////////////
+
+void ESPRotary::_checkForSpeedup(long now) {
+  if (now - last_turn <= speedup_interval) {
+    _setEvent(speedup_triggered);
+    if (dir == right) {
+      steps += (speedup_increment - increment) * steps_per_click;
+    } else {
+      steps -= (speedup_increment - increment) * steps_per_click;
+    }
+  }  
+}
+
+/////////////////////////////////////////////////////////////////
+
+void ESPRotary::_setEvent(rotary_event e) {
+  switch (e) {
+    case left_rotation:
+      if (left_cb != NULL) left_cb (*this);
+      if (change_cb != NULL) change_cb (*this);
+      return;
+    break;
+
+    case right_rotation:
+      if (right_cb != NULL) right_cb (*this);
+      if (change_cb != NULL) change_cb (*this);
+      return;
+    break;
+
+    case speedup_triggered:
+      if (last_event == speedup_triggered && !retrigger_event) return;
+      if (speedup_cb != NULL) speedup_cb (*this);
+    break;
+
+    case upper_bound_hit:
+      if (last_event == upper_bound_hit && !retrigger_event) return;
+      if (upper_cb != NULL) upper_cb (*this);
+    break;
+
+    case lower_bound_hit:
+      if (last_event == lower_bound_hit && !retrigger_event) return;
+      if (lower_cb != NULL) lower_cb (*this);
+    break;
+
+    case none:
+    break;
+  }
+  last_event = e;
+}
+/////////////////////////////////////////////////////////////////
+
+  void ESPRotary::setSpeedupInterval(int time) {
+    speedup_interval = time;
   }
 
-  if (position > last_position) {
-    dir = right;
-    if (right_cb != NULL) right_cb (*this);
-  } else {
-    dir = left;
-    if (left_cb != NULL) left_cb (*this);
+/////////////////////////////////////////////////////////////////
+
+  int ESPRotary::getSpeedupInterval() const {
+    return speedup_interval;
   }
-  last_position = position;
-  if (change_cb != NULL) change_cb (*this);
+
+/////////////////////////////////////////////////////////////////
+
+  void ESPRotary::setSpeedupIncrement(int inc) {
+    speedup_increment = inc;
+  }
+
+/////////////////////////////////////////////////////////////////
+
+  int ESPRotary::getSpeedupIncrement() const {
+    return speedup_increment;
+  }
+
+/////////////////////////////////////////////////////////////////
+
+  void ESPRotary::enableSpeedup(bool enable) {
+    enable_speedup = enable;
+  }
+
+/////////////////////////////////////////////////////////////////
+
+  bool ESPRotary::isSpeedupEnabled() const {
+    return enable_speedup;
+  }
+
+/////////////////////////////////////////////////////////////////
+
+  rotary_event ESPRotary::getLastEvent() const {
+    return last_event;
+  }
+
+/////////////////////////////////////////////////////////////////
+
+void ESPRotary::retriggerEvent(bool retrigger) {
+  retrigger_event = retrigger;
 }
 
 /////////////////////////////////////////////////////////////////

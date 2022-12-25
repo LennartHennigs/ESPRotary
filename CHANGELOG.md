@@ -1,7 +1,9 @@
 # Changelog
 
 ## Unreleased
-
+- added speedup functionality
+- refactored loop and events triggering
+- multiple similar events can now be surpressed
 - Added ESP8266 and ESP32 interrupt examples
 - fixed bug with ID
 

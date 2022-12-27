@@ -1,10 +1,11 @@
 # Changelog
 
 ## Unreleased
-- added speedup functionality
-- refactored loop and events triggering
+
+- added speedup functionality as suggested in [#37](https://github.com/LennartHennigs/ESPRotary/discussions/37)
 - multiple similar events can now be surpressed
 - Added ESP8266 and ESP32 interrupt examples
+- refactored loop and event triggering
 - fixed bug with ID
 
 ## [1.6.1] - 2022-12-24

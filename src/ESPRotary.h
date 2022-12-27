@@ -24,7 +24,8 @@ enum rotary_direction {
 enum rotary_event {
   left_rotation,
   right_rotation,
-  speedup_triggered,
+  speedup_started,
+  speedup_ended,
   upper_bound_hit,
   lower_bound_hit,
   none
@@ -50,6 +51,7 @@ class ESPRotary {
     bool enable_speedup = false;
     int speedup_increment = 5;
     int speedup_interval = 75;
+    int in_speedup = false;
     long last_turn = 0;
 
     typedef void (*CallbackFunction) (ESPRotary&);
@@ -58,7 +60,9 @@ class ESPRotary {
     CallbackFunction left_cb = NULL;
     CallbackFunction lower_cb = NULL;
     CallbackFunction upper_cb = NULL;
-    CallbackFunction speedup_cb = NULL;
+
+    CallbackFunction speedup_start_cb = NULL;
+    CallbackFunction speedup_end_cb = NULL;
 
   public:
     ESPRotary();
@@ -73,14 +77,15 @@ class ESPRotary {
     String directionToString(rotary_direction dir) const;
 
     void setIncrement(int inc);
-    int getIncrement() const;
-
     void enableSpeedup(bool enable);
     void setSpeedupInterval(int time);
     void setSpeedupIncrement(int inc);
+
+    int getIncrement() const;
+    bool isSpeedupEnabled() const;
     int getSpeedupInterval() const;
     int getSpeedupIncrement() const;
-    bool isSpeedupEnabled() const;
+    bool isInSpeedup() const;
 
     rotary_event getLastEvent() const;
     void retriggerEvent(bool retrigger);
@@ -98,7 +103,8 @@ class ESPRotary {
     void setLeftRotationHandler(CallbackFunction f);
     void setUpperOverflowHandler(CallbackFunction f);
     void setLowerOverflowHandler(CallbackFunction f);
-    void setSpeedupHandler(CallbackFunction f);
+    void setSpeedupStartedHandler(CallbackFunction f);
+    void setSpeedupEndedHandler(CallbackFunction f);
 
     int getID() const;
     void setID(int newID);

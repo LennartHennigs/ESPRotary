@@ -26,51 +26,79 @@ Some of the code based of this library is based on code from [PJRC](https://www.
 - Use the `begin()` or the parameterized constructor to create a new instance of the class
 - Encoder produce different numbers of "click" on a single turn.
 - You can specify the number of clicks in the constructor, or via a setter function
-  - ```void setStepsPerClick(int steps)```
-  - ```int getStepsPerClick() const```
+  - `void setStepsPerClick(int steps)`
+  - `int getStepsPerClick() const`
 
 ### Callback Handlers
 
 - The library provides several callback handlers to detect events
-  - ```void setChangedHandler(CallbackFunction f)```
-  - ```void setRightRotationHandler(CallbackFunction f)```
-  - ```void setLeftRotationHandler(CallbackFunction f)```
-  - ```void setUpperOverflowHandler(CallbackFunction f)```
-  - ```void setLowerOverflowHandler(CallbackFunction f)```
+  - `void setChangedHandler(CallbackFunction f)`
+  - `void setRightRotationHandler(CallbackFunction f)`
+  - `void setLeftRotationHandler(CallbackFunction f)`
+  - `void setUpperOverflowHandler(CallbackFunction f)`
+  - `void setLowerOverflowHandler(CallbackFunction f)`
 - The library does not detect button clicks. You have to use a seperate library for this, e.g. [Button2](https://github.com/LennartHennigs/Button2).
 
 ### Ranges
 
 - In the constructor you can define an upper and a lower treshhold. The encoder value will not be bypass  these values.
 - There are also getter and setter functions the these values
-  - ```void setUpperBound(int upper_bound)```
-  - ```void setLowerBound(int lower_bound)```
-  - ```int getUpperBound() const```
-  - ```int getLowerBound() const```
-- See the [RangedCounter](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/RangedCounter/RangedCounter.ino) example for details
+  - `void setUpperBound(int upper_bound)`
+  - `void setLowerBound(int lower_bound)`
+  - `int getUpperBound() const`
+  - `int getLowerBound() const`
+- See the [RangedCounter](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/RangedCounter/RangedCounter.ino) example for details.
+
+### Retrigger (out of bound) events?
+
+- If you want that out of bound events are only triggered once a bound is reached, you can set:
+  - `r.retriggerEvent(false)`
+- Otherwise each (out of bounds) turn will retrigger the vent.
 
 ### Reading out information
 
 - The class allows you the get the position and the direction after a click using these function:
-  - ```int getPosition() const```
-  - ```byte getDirection() const```
-  - ```String directionToString(byte direction) const```
+  - `int getPosition() const`
+  - `byte getDirection() const`
+  - `String directionToString(byte direction) const`
 
 ### Speed
 
 - You can define the speed, i.e. the increment the a single click in the constructor
 - There is also a getter and setter function for this
-  - ```void setIncrement(int inc);```
-  - ```int getIncrement() const```
+  - `void setIncrement(int inc)`
+  - `int getIncrement() const`
+
+### Speedup Mode
+
+- You can also define, that the increment shall change when the encoder is turned fast.
+- Use these functions to define the interval (between clicks) and the increment:
+  - `void setSpeedupInterval(int time)`
+  - `void setSpeedupIncrement(int inc)`
+- Per default  the interval is set to `75ms` and the increment is set to `5`.
+- There are also getter functions for both parameters:
+  - `int getSpeedupInterval() const`
+  - `int getSpeedupIncrement() const`
+- To enable the speedup mode use this member function:
+  - `void enableSpeedup(bool enable)`
+- ...and to check:
+  - `bool isSpeedupEnabled() const`
+- There are also event handers that let you track if the speedup mode was entered or exited:
+  - `void setSpeedupStartedHandler(CallbackFunction f)`
+  - `void setSpeedupEndedHandler(CallbackFunction f)`
+- Alternatively, you can use this function to determine its state:
+  - `bool isInSpeedup() const`
+- If you have bound defined, the speedup mode will be automatically ended when you hit it.
 
 ### The Loop
 
 - For the class to work, you need to call the `loop()` member function in your sketch's `loop()` function.
+- Alternatively, you can use a timer interrupt to call the member `loop()`function.
 - See the examples for more details.
 
 ### Using it with a timer interrupt
 
-- Instead of using the main loop() of your sketch you can also use an interrupt timer function. See
+- Instead of using the main loop() of your sketch you can also use an interrupt timer function.
 - See [ESP32Interrupt](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/ESP32Interrupt/ESP32Interrupt.ino) or [ESP8266Interrupt](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/ESP8266Interrupt/ESP8266Interrupt.ino) to see how
 
 ### IDs for Encoder Instances
@@ -90,6 +118,7 @@ Some of the code based of this library is based on code from [PJRC](https://www.
 - [SimpleCounter](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/SimpleCounter/SimpleCounter.ino) - basic example
 - [SimpleCounterWithButton](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/SimpleCounterWithButton/SimpleCounterWithButton.ino) - basic example with a button handler
 - [RangedCounter](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/RangedCounter/RangedCounter.ino) - shows how to define ranges
+- [Speedup](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/Speedup/Speedup.ino) - shows how to implement the speedup mode
 - [ESP8266Interrupt](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/ESP8266Interrupt/ESP8266Interrupt.ino) - uses an ESP8266 interrupt instead of the main loop
 - [ESP32Interrupt](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/ESP32Interrupt/ESP32Interrupt.ino) - uses an ESP32 interrupt instead of the main loop
 
@@ -98,35 +127,54 @@ Some of the code based of this library is based on code from [PJRC](https://www.
 These are the constructor and the member functions the library provides:
 
 ``` c++
-    ESPRotary();
-    ESPRotary(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int inital_pos = 0, int increment = 1);
+  ESPRotary();
+  ESPRotary(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int inital_pos = 0, int increment = 1);
 
-    void begin(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int inital_pos = 0, int increment = 1);
+  void begin(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int inital_pos = 0, int increment = 1);
 
-    int getPosition() const;
-    void resetPosition(int p = 0, bool fireCallback = true);
+  int getPosition() const;
+  void resetPosition(int p = 0, bool fireCallback = true);
 
-    byte getDirection() const;
-    String directionToString(byte direction) const;
+  rotary_direction getDirection() const;
+  String directionToString(rotary_direction dir) const;
 
-    void setIncrement(int inc);
-    int getIncrement() const;
+  void setIncrement(int inc);
+  int getIncrement() const;
 
-    void setUpperBound(int upper_bound);
-    void setLowerBound(int lower_bound);
-    int getUpperBound() const;
-    int getLowerBound() const;
+  void enableSpeedup(bool enable);
+  void setSpeedupInterval(int time);
+  void setSpeedupIncrement(int inc);
 
-    void setStepsPerClick(int steps);
-    int getStepsPerClick() const;
+  bool isSpeedupEnabled() const;
+  int getSpeedupInterval() const;
+  int getSpeedupIncrement() const;
+  bool isInSpeedup() const;
 
-    void setChangedHandler(CallbackFunction f);
-    void setRightRotationHandler(CallbackFunction f);
-    void setLeftRotationHandler(CallbackFunction f);
-    void setUpperOverflowHandler(CallbackFunction f);
-    void setLowerOverflowHandler(CallbackFunction f);
+  rotary_event getLastEvent() const;
+  void retriggerEvent(bool retrigger);
 
-    void loop();
+  void setUpperBound(int upper_bound);
+  void setLowerBound(int lower_bound);
+  int getUpperBound() const;
+  int getLowerBound() const;
+
+  void setStepsPerClick(int steps);
+  int getStepsPerClick() const;
+
+  void setChangedHandler(CallbackFunction f);
+  void setRightRotationHandler(CallbackFunction f);
+  void setLeftRotationHandler(CallbackFunction f);
+  void setUpperOverflowHandler(CallbackFunction f);
+  void setLowerOverflowHandler(CallbackFunction f);
+  void setSpeedupStartedHandler(CallbackFunction f);
+  void setSpeedupEndedHandler(CallbackFunction f);
+
+  int getID() const;
+  void setID(int newID);
+
+  bool operator == (ESPRotary &rhs);
+
+  void loop();
 ```
 
 ## Installation

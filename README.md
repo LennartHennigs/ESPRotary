@@ -52,7 +52,7 @@ Some of the code based of this library is based on code from [PJRC](https://www.
 ### Retrigger (out of bound) events?
 
 - If you want that out of bound events are only triggered once a bound is reached, you can set:
-  - `r.retriggerEvent(false)`
+  - `retriggerEvent(false)`
 - Otherwise each (out of bounds) turn will retrigger the vent.
 
 ### Reading out information

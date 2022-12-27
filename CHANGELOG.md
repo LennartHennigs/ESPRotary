@@ -3,7 +3,23 @@
 ## Unreleased
 
 - added speedup functionality as suggested in [#37](https://github.com/LennartHennigs/ESPRotary/discussions/37)
+
+  ```c++
+  void setSpeedupInterval(int time)
+  void setSpeedupIncrement(int inc)
+  void enableSpeedup(bool enable)
+  
+  bool isSpeedupEnabled() const
+  int getSpeedupInterval() const
+  int getSpeedupIncrement() const
+
+  void setSpeedupStartedHandler(CallbackFunction f)
+  void setSpeedupEndedHandler(CallbackFunction f)
+  bool isInSpeedup() const
+  ```
+
 - multiple similar events can now be surpressed
+  - `retriggerEvent(bool retrigger)`
 - Added ESP8266 and ESP32 interrupt examples
 - refactored loop and event triggering
 - fixed bug with ID

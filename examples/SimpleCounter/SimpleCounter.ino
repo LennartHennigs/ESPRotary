@@ -10,6 +10,8 @@
 // this number depends on your rotary encoder
 #define CLICKS_PER_STEP 4   
 
+#define SERIAL_SPEED    115200
+
 /////////////////////////////////////////////////////////////////
 
 ESPRotary r;
@@ -17,7 +19,7 @@ ESPRotary r;
 /////////////////////////////////////////////////////////////////
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(SERIAL_SPEED);
   delay(50);
   Serial.println("\n\nSimple Counter");
   

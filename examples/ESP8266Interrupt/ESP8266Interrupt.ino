@@ -16,6 +16,8 @@
 
 #define CLICKS_PER_STEP 4
 
+#define SERIAL_SPEED    115200
+
 /////////////////////////////////////////////////////////////////
 
 ESPRotary r;
@@ -24,7 +26,7 @@ Ticker t;
 /////////////////////////////////////////////////////////////////
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(SERIAL_SPEED);
   delay(50);
 
   r.begin(ROTARY_PIN1, ROTARY_PIN2, CLICKS_PER_STEP);

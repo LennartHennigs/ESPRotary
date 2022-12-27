@@ -11,6 +11,7 @@
 
 #define CLICKS_PER_STEP   4   // this number depends on your rotary encoder 
 
+#define SERIAL_SPEED    115200
 
 /////////////////////////////////////////////////////////////////
 
@@ -20,7 +21,7 @@ Button2 b;
 /////////////////////////////////////////////////////////////////
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(SERIAL_SPEED);
   delay(50);
   Serial.println("\n\nSimple Counter");
   

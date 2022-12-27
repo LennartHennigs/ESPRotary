@@ -77,11 +77,12 @@ class ESPRotary {
     String directionToString(rotary_direction dir) const;
 
     void setIncrement(int inc);
+    int getIncrement() const;
+
     void enableSpeedup(bool enable);
     void setSpeedupInterval(int time);
     void setSpeedupIncrement(int inc);
 
-    int getIncrement() const;
     bool isSpeedupEnabled() const;
     int getSpeedupInterval() const;
     int getSpeedupIncrement() const;

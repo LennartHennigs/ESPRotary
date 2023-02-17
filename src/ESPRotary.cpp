@@ -47,8 +47,8 @@ void ESPRotary::begin(byte pin1, byte pin2, byte steps_per_click /* = 1 */, int 
 
   loop();
   steps = inital_pos * steps_per_click;
-  last_event = none;
-  dir = undefined;
+  last_event = rotary_event::none;
+  dir = rotary_direction::undefined;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -126,8 +126,8 @@ void ESPRotary::resetPosition(int p /* = 0 */, bool fireCallback /* = true */) {
   steps = p * steps_per_click;
   _isWithinBounds();
   if (fireCallback && change_cb != NULL) change_cb(*this);
-  last_event = none;
-  dir = undefined;
+  last_event = rotary_event::none;
+  dir = rotary_direction::undefined;
   in_speedup = false;
 }
 
@@ -164,7 +164,7 @@ rotary_direction ESPRotary::getDirection() const {
 /////////////////////////////////////////////////////////////////
 
 String ESPRotary::directionToString(rotary_direction dir) const {
-  return (dir == right) ? "right" : "left";
+  return (dir == rotary_direction::right) ? "right" : "left";
 }
 
 /////////////////////////////////////////////////////////////////
@@ -197,13 +197,13 @@ void ESPRotary::loop() {
   long now = millis();
   // did it change (enough)?
   if (!_wasRotated()) return;
-  dir = (steps > last_steps) ? right : left;
+  dir = (steps > last_steps) ? rotary_direction::right : rotary_direction::left;
   // shall I speedup things
   if (enable_speedup) _checkForSpeedup(now);
   // are we out of bounds?
   if (_isWithinBounds(true)) {
     // trigger rotation event
-    _setEvent((dir == right) ? right_rotation : left_rotation);
+    _setEvent((dir == rotary_direction::right) ? rotary_event::right_rotation : rotary_event::left_rotation);
     last_turn = now;
   }
   last_steps = steps;
@@ -249,14 +249,14 @@ bool ESPRotary::_wasRotated() {
 
 void ESPRotary::_checkForSpeedup(long now) {
   if (now - last_turn > speedup_interval) {
-    if (in_speedup) _setEvent(speedup_ended);
+    if (in_speedup) _setEvent(rotary_event::speedup_ended);
     return;
   }
-  steps += (dir == right ? 1 : -1) * (speedup_increment - increment) * steps_per_click;
+  steps += (dir == rotary_direction::right ? 1 : -1) * (speedup_increment - increment) * steps_per_click;
   int pos = getPosition();
   // only trigger speedup when you are not "on a wall"
   if (pos > lower_bound && pos < upper_bound) {
-    if (!in_speedup) _setEvent(speedup_started);
+    if (!in_speedup) _setEvent(rotary_event::speedup_started);
   }
 }
 
@@ -267,13 +267,13 @@ bool ESPRotary::_isWithinBounds(bool alert /* = false */) {
   if (pos > lower_bound && pos < upper_bound) return true;
 
   if (pos >= upper_bound) {
-    if (in_speedup) _setEvent(speedup_ended);
-    if (alert) _setEvent(upper_bound_hit);
+    if (in_speedup) _setEvent(rotary_event::speedup_ended);
+    if (alert) _setEvent(rotary_event::upper_bound_hit);
     steps = upper_bound * steps_per_click;
 
   } else if (pos <= lower_bound) {
-    if (in_speedup) _setEvent(speedup_ended);
-    if (alert) _setEvent(lower_bound_hit);
+    if (in_speedup) _setEvent(rotary_event::speedup_ended);
+    if (alert) _setEvent(rotary_event::lower_bound_hit);
     steps = lower_bound * steps_per_click;
   }
   return false;
@@ -282,37 +282,37 @@ bool ESPRotary::_isWithinBounds(bool alert /* = false */) {
 
 void ESPRotary::_setEvent(rotary_event e) {
   switch (e) {
-    case left_rotation:
+    case rotary_event::left_rotation:
       if (left_cb != NULL) left_cb(*this);
       if (change_cb != NULL) change_cb(*this);
       break;
 
-    case right_rotation:
+    case rotary_event::right_rotation:
       if (right_cb != NULL) right_cb(*this);
       if (change_cb != NULL) change_cb(*this);
       break;
 
-    case speedup_started:
+    case rotary_event::speedup_started:
       if (speedup_start_cb != NULL) speedup_start_cb(*this);
       in_speedup = true;
       break;
 
-    case speedup_ended:
+    case rotary_event::speedup_ended:
       if (speedup_end_cb != NULL) speedup_end_cb(*this);
       in_speedup = false;
       break;
 
-    case upper_bound_hit:
-      if (last_event == upper_bound_hit && !retrigger_event) return;
+    case rotary_event::upper_bound_hit:
+      if (last_event == rotary_event::upper_bound_hit && !retrigger_event) return;
       if (upper_cb != NULL) upper_cb(*this);
       break;
 
-    case lower_bound_hit:
-      if (last_event == lower_bound_hit && !retrigger_event) return;
+    case rotary_event::lower_bound_hit:
+      if (last_event == rotary_event::lower_bound_hit && !retrigger_event) return;
       if (lower_cb != NULL) lower_cb(*this);
       break;
 
-    case none:
+    case rotary_event::none:
       break;
   }
   last_event = e;

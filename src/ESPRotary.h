@@ -15,13 +15,13 @@
 
 /////////////////////////////////////////////////////////////////
 
-enum rotary_direction {
+enum class rotary_direction {
   undefined = 0,
   right = 1,
   left = 255
 };
 
-enum rotary_event {
+enum class rotary_event {
   left_rotation,
   right_rotation,
   speedup_started,

@@ -278,11 +278,15 @@ void ESPRotary::_setEvent(rotary_event e) {
 
     case rotary_event::upper_bound_hit:
       if (last_event == rotary_event::upper_bound_hit && !retrigger_event) return;
+      if (right_cb != NULL) right_cb(*this);
+      if (change_cb != NULL) change_cb(*this);
       if (upper_cb != NULL) upper_cb(*this);
       break;
 
     case rotary_event::lower_bound_hit:
       if (last_event == rotary_event::lower_bound_hit && !retrigger_event) return;
+      if (left_cb != NULL) left_cb(*this);
+      if (change_cb != NULL) change_cb(*this);
       if (lower_cb != NULL) lower_cb(*this);
       break;
 

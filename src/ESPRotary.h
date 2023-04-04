@@ -54,7 +54,7 @@ class ESPRotary {
   int in_speedup = false;
   unsigned long last_turn = 0;
 
-  typedef void (*CallbackFunction)(ESPRotary &);
+  typedef std::function<void(ESPRotary &)> CallbackFunction;
   CallbackFunction change_cb = NULL;
   CallbackFunction right_cb = NULL;
   CallbackFunction left_cb = NULL;

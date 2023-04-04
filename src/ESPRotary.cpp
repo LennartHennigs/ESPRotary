@@ -241,14 +241,14 @@ bool ESPRotary::_isWithinBounds(bool alert /* = false */) {
   if (pos > lower_bound && pos < upper_bound) return true;
 
   if (pos >= upper_bound) {
+    steps = upper_bound * steps_per_click;
     if (in_speedup) _setEvent(rotary_event::speedup_ended);
     if (alert) _setEvent(rotary_event::upper_bound_hit);
-    steps = upper_bound * steps_per_click;
 
   } else if (pos <= lower_bound) {
+    steps = lower_bound * steps_per_click;
     if (in_speedup) _setEvent(rotary_event::speedup_ended);
     if (alert) _setEvent(rotary_event::lower_bound_hit);
-    steps = lower_bound * steps_per_click;
   }
   return false;
 }

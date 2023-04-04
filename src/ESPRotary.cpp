@@ -213,9 +213,7 @@ void ESPRotary::loop() {
 
 bool ESPRotary::_wasRotated() {
   static const int8_t factors[] = {0, 1, -1, 2, -1, 0, -2, 1, 1, -2, 0, -1, 2, -1, 1, 0};
-  int s = state & 3;
-  if (digitalRead(pin1)) s |= 4;
-  if (digitalRead(pin2)) s |= 8;
+  int s = state & 3 | digitalRead(pin1) << 2 | digitalRead(pin2) << 3 ;
   steps += factors[s] * increment;
   state = (s >> 2);
   return (abs(steps - last_steps) >= steps_per_click * increment);

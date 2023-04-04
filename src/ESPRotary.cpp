@@ -194,7 +194,7 @@ bool ESPRotary::operator==(ESPRotary &rhs) {
 /////////////////////////////////////////////////////////////////
 
 void ESPRotary::loop() {
-  long now = millis();
+  unsigned long now = millis();
   // did it change (enough)?
   if (!_wasRotated()) return;
   dir = (steps > last_steps) ? rotary_direction::right : rotary_direction::left;
@@ -247,7 +247,7 @@ bool ESPRotary::_wasRotated() {
 
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::_checkForSpeedup(long now) {
+void ESPRotary::_checkForSpeedup(unsigned long now) {
   if (now - last_turn > speedup_interval) {
     if (in_speedup) _setEvent(rotary_event::speedup_ended);
     return;

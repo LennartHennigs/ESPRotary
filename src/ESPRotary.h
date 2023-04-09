@@ -50,8 +50,8 @@ class ESPRotary {
   bool boundsTrigger = false;
   bool retrigger_event = true;
   bool enable_speedup = false;
-  int speedup_increment = 5;
-  int speedup_interval = 75;
+  unsigned int speedup_increment = 5;
+  unsigned int speedup_interval = 75;
   int in_speedup = false;
   unsigned long last_turn = 0;
 

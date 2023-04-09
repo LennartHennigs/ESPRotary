@@ -213,7 +213,7 @@ void ESPRotary::loop() {
 
 bool ESPRotary::_wasRotated() {
   static const int8_t factors[] = {0, 1, -1, 2, -1, 0, -2, 1, 1, -2, 0, -1, 2, -1, 1, 0};
-  int s = state & 3 | digitalRead(pin1) << 2 | digitalRead(pin2) << 3 ;
+  int s = (state & 3) | digitalRead(pin1) << 2 | digitalRead(pin2) << 3 ;
   steps += factors[s] * increment;
   state = (s >> 2);
   return (abs(steps - last_steps) >= steps_per_click * increment);
@@ -232,6 +232,12 @@ void ESPRotary::_checkForSpeedup(unsigned long now) {
   if (pos > lower_bound && pos < upper_bound) {
     if (!in_speedup) _setEvent(rotary_event::speedup_started);
   }
+}
+
+/////////////////////////////////////////////////////////////////
+
+void ESPRotary::triggerOnBounds(bool trigger /* = false */) {
+  boundsTrigger = trigger;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -278,15 +284,19 @@ void ESPRotary::_setEvent(rotary_event e) {
 
     case rotary_event::upper_bound_hit:
       if (last_event == rotary_event::upper_bound_hit && !retrigger_event) return;
-      if (right_cb != NULL) right_cb(*this);
-      if (change_cb != NULL) change_cb(*this);
+      if (boundsTrigger) {
+        if (right_cb != NULL) right_cb(*this);
+        if (change_cb != NULL) change_cb(*this);
+      }
       if (upper_cb != NULL) upper_cb(*this);
       break;
 
     case rotary_event::lower_bound_hit:
       if (last_event == rotary_event::lower_bound_hit && !retrigger_event) return;
-      if (left_cb != NULL) left_cb(*this);
-      if (change_cb != NULL) change_cb(*this);
+      if (boundsTrigger) {
+        if (left_cb != NULL) left_cb(*this);
+        if (change_cb != NULL) change_cb(*this);
+      }
       if (lower_cb != NULL) lower_cb(*this);
       break;
 

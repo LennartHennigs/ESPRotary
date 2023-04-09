@@ -125,7 +125,7 @@ void ESPRotary::resetPosition(int p /* = 0 */, bool fireCallback /* = true */) {
   // yes...
   steps = p * steps_per_click;
   _isWithinBounds();
-  if (fireCallback && change_cb != NULL) change_cb(*this);
+  if (fireCallback) _callCallback(change_cb);
   last_event = rotary_event::none;
   dir = rotary_direction::undefined;
   in_speedup = false;
@@ -133,8 +133,8 @@ void ESPRotary::resetPosition(int p /* = 0 */, bool fireCallback /* = true */) {
 
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::setIncrement(int inc) {
-  increment = inc;
+void ESPRotary::setIncrement(int increment) {
+  increment = increment;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -213,10 +213,11 @@ void ESPRotary::loop() {
 
 bool ESPRotary::_wasRotated() {
   static const int8_t factors[] = {0, 1, -1, 2, -1, 0, -2, 1, 1, -2, 0, -1, 2, -1, 1, 0};
-  int s = (state & 3) | digitalRead(pin1) << 2 | digitalRead(pin2) << 3 ;
-  steps += factors[s] * increment;
-  state = (s >> 2);
-  return (abs(steps - last_steps) >= steps_per_click * increment);
+  int encoderState = (state & 3) | digitalRead(pin1) << 2 | digitalRead(pin2) << 3 ;
+  steps += factors[encoderState] * increment;
+  state = (encoderState >> 2);
+  int stepDifference = abs(steps - last_steps);
+  return stepDifference >= (steps_per_click * increment);
 }
 
 /////////////////////////////////////////////////////////////////
@@ -226,7 +227,7 @@ void ESPRotary::_checkForSpeedup(unsigned long now) {
     if (in_speedup) _setEvent(rotary_event::speedup_ended);
     return;
   }
-  steps += (dir == rotary_direction::right ? 1 : -1) * (speedup_increment - increment) * steps_per_click;
+  steps += ((dir == rotary_direction::right ? 1 : -1) * (speedup_increment - increment) * steps_per_click);
   int pos = getPosition();
   // only trigger speedup when you are not "on a wall"
   if (pos > lower_bound && pos < upper_bound) {
@@ -236,79 +237,87 @@ void ESPRotary::_checkForSpeedup(unsigned long now) {
 
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::triggerOnBounds(bool trigger /* = false */) {
-  boundsTrigger = trigger;
+void ESPRotary::triggerOnBounds(bool triggerEvents /* = false */) {
+  boundsTrigger = triggerEvents;
 }
 
 /////////////////////////////////////////////////////////////////
 
-bool ESPRotary::_isWithinBounds(bool alert /* = false */) {
+void ESPRotary::_callCallback(CallbackFunction callback) {
+  if (callback != NULL) callback(*this);
+}
+
+/////////////////////////////////////////////////////////////////
+
+bool ESPRotary::_isWithinBounds(bool triggerAlerts /* = false */) {
   int pos = getPosition();
   if (pos > lower_bound && pos < upper_bound) return true;
 
   if (pos >= upper_bound) {
     steps = upper_bound * steps_per_click;
     if (in_speedup) _setEvent(rotary_event::speedup_ended);
-    if (alert) _setEvent(rotary_event::upper_bound_hit);
+    if (triggerAlerts) _setEvent(rotary_event::upper_bound_hit);
 
   } else if (pos <= lower_bound) {
     steps = lower_bound * steps_per_click;
     if (in_speedup) _setEvent(rotary_event::speedup_ended);
-    if (alert) _setEvent(rotary_event::lower_bound_hit);
+    if (triggerAlerts) _setEvent(rotary_event::lower_bound_hit);
   }
+
   return false;
 }
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::_setEvent(rotary_event e) {
-  switch (e) {
+void ESPRotary::_setEvent(rotary_event event) {
+  switch (event) {
     case rotary_event::left_rotation:
-      if (left_cb != NULL) left_cb(*this);
-      if (change_cb != NULL) change_cb(*this);
+      _callCallback(left_cb);
+      _callCallback(change_cb);
       break;
 
     case rotary_event::right_rotation:
-      if (right_cb != NULL) right_cb(*this);
-      if (change_cb != NULL) change_cb(*this);
+      _callCallback(right_cb);
+      _callCallback(change_cb);
       break;
 
     case rotary_event::speedup_started:
-      if (speedup_start_cb != NULL) speedup_start_cb(*this);
+      _callCallback(speedup_start_cb);
       in_speedup = true;
       break;
 
     case rotary_event::speedup_ended:
-      if (speedup_end_cb != NULL) speedup_end_cb(*this);
+      _callCallback(speedup_end_cb);
       in_speedup = false;
       break;
 
     case rotary_event::upper_bound_hit:
       if (last_event == rotary_event::upper_bound_hit && !retrigger_event) return;
       if (boundsTrigger) {
-        if (right_cb != NULL) right_cb(*this);
-        if (change_cb != NULL) change_cb(*this);
+        _callCallback(right_cb);
+        _callCallback(change_cb);
       }
-      if (upper_cb != NULL) upper_cb(*this);
+      _callCallback(upper_cb);
       break;
 
     case rotary_event::lower_bound_hit:
       if (last_event == rotary_event::lower_bound_hit && !retrigger_event) return;
       if (boundsTrigger) {
-        if (left_cb != NULL) left_cb(*this);
-        if (change_cb != NULL) change_cb(*this);
+        _callCallback(left_cb);
+        _callCallback(change_cb);
       }
-      if (lower_cb != NULL) lower_cb(*this);
+      _callCallback(lower_cb);
       break;
 
     case rotary_event::none:
       break;
   }
-  last_event = e;
+  last_event = event;
 }
+
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::setSpeedupInterval(int time) {
-  speedup_interval = time;
+void ESPRotary::setSpeedupInterval(int interval) {
+  speedup_interval = interval;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -319,8 +328,8 @@ int ESPRotary::getSpeedupInterval() const {
 
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::setSpeedupIncrement(int inc) {
-  speedup_increment = inc;
+void ESPRotary::setSpeedupIncrement(int increment) {
+  speedup_increment = increment;
 }
 
 /////////////////////////////////////////////////////////////////

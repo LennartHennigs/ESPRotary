@@ -52,9 +52,9 @@ class ESPRotary {
   int speedup_increment = 5;
   int speedup_interval = 75;
   int in_speedup = false;
-  long last_turn = 0;
+  unsigned long last_turn = 0;
 
-  typedef void (*CallbackFunction)(ESPRotary &);
+  typedef std::function<void(ESPRotary &)> CallbackFunction;
   CallbackFunction change_cb = NULL;
   CallbackFunction right_cb = NULL;
   CallbackFunction left_cb = NULL;
@@ -120,7 +120,7 @@ class ESPRotary {
   void _setEvent(rotary_event e);
   bool _wasRotated();
   bool _isWithinBounds(bool alert = false);
-  void _checkForSpeedup(long now);
+  void _checkForSpeedup(unsigned long now);
   void _setID();
 };
 

@@ -194,7 +194,7 @@ bool ESPRotary::operator==(ESPRotary &rhs) {
 /////////////////////////////////////////////////////////////////
 
 void ESPRotary::loop() {
-  long now = millis();
+  unsigned long now = millis();
   // did it change (enough)?
   if (!_wasRotated()) return;
   dir = (steps > last_steps) ? rotary_direction::right : rotary_direction::left;
@@ -212,42 +212,16 @@ void ESPRotary::loop() {
 /////////////////////////////////////////////////////////////////
 
 bool ESPRotary::_wasRotated() {
-  int s = state & 3;
-  if (digitalRead(pin1)) s |= 4;
-  if (digitalRead(pin2)) s |= 8;
-  switch (s) {
-    case 0:
-    case 5:
-    case 10:
-    case 15:
-      break;
-    case 1:
-    case 7:
-    case 8:
-    case 14:
-      steps += increment;
-      break;
-    case 2:
-    case 4:
-    case 11:
-    case 13:
-      steps -= increment;
-      break;
-    case 3:
-    case 12:
-      steps += 2 * increment;
-      break;
-    default:
-      steps -= 2 * increment;
-      break;
-  }
+  static const int8_t factors[] = {0, 1, -1, 2, -1, 0, -2, 1, 1, -2, 0, -1, 2, -1, 1, 0};
+  int s = state & 3 | digitalRead(pin1) << 2 | digitalRead(pin2) << 3 ;
+  steps += factors[s] * increment;
   state = (s >> 2);
   return (abs(steps - last_steps) >= steps_per_click * increment);
 }
 
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::_checkForSpeedup(long now) {
+void ESPRotary::_checkForSpeedup(unsigned long now) {
   if (now - last_turn > speedup_interval) {
     if (in_speedup) _setEvent(rotary_event::speedup_ended);
     return;
@@ -267,14 +241,14 @@ bool ESPRotary::_isWithinBounds(bool alert /* = false */) {
   if (pos > lower_bound && pos < upper_bound) return true;
 
   if (pos >= upper_bound) {
+    steps = upper_bound * steps_per_click;
     if (in_speedup) _setEvent(rotary_event::speedup_ended);
     if (alert) _setEvent(rotary_event::upper_bound_hit);
-    steps = upper_bound * steps_per_click;
 
   } else if (pos <= lower_bound) {
+    steps = lower_bound * steps_per_click;
     if (in_speedup) _setEvent(rotary_event::speedup_ended);
     if (alert) _setEvent(rotary_event::lower_bound_hit);
-    steps = lower_bound * steps_per_click;
   }
   return false;
 }
@@ -304,11 +278,15 @@ void ESPRotary::_setEvent(rotary_event e) {
 
     case rotary_event::upper_bound_hit:
       if (last_event == rotary_event::upper_bound_hit && !retrigger_event) return;
+      if (right_cb != NULL) right_cb(*this);
+      if (change_cb != NULL) change_cb(*this);
       if (upper_cb != NULL) upper_cb(*this);
       break;
 
     case rotary_event::lower_bound_hit:
       if (last_event == rotary_event::lower_bound_hit && !retrigger_event) return;
+      if (left_cb != NULL) left_cb(*this);
+      if (change_cb != NULL) change_cb(*this);
       if (lower_cb != NULL) lower_cb(*this);
       break;
 

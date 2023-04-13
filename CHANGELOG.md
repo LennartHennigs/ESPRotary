@@ -6,6 +6,17 @@
 
 **Note**: Unreleased changes are checked in but not part of an official release (available through the Arduino IDE or PlatfomIO) yet. This allows you to test WiP features and give feedback to them.
 
+## [2.1.0] - 2024-04-13
+
+- Added `triggerOnBounds(bool triggerEvents = true)` method to be able to suppress rotate events when the boundaries are reached
+- Made `now` and time related attributes to `unsigned long`
+- Replaced cases with lookup table to simplify `loop()`
+- Simplified state change in the `loop()`
+- Positions are only set within the defined boundaries
+- some refactoring suggested by GPT-4
+
+Most changes were suggested in [#43](https://github.com/LennartHennigs/ESPRotary/pull/43) by [Alex Herman](https://github.com/gaaf). Thank you.
+
 ## [2.0.0] - 2022-12-27
 
 - added speedup functionality as suggested in [#37](https://github.com/LennartHennigs/ESPRotary/discussions/37)
@@ -78,7 +89,7 @@
 - updated ```README.md```
 - added function ```setStepsPerClick()```, as requested by [asalillo](https://github.com/lasalillo) in [#12](https://github.com/LennartHennigs/ESPRotary/issues/12)
 - Fixed bug [#13](https://github.com/LennartHennigs/ESPRotary/issues/13) in ```resetPosition()```, as pointed out by [jjarp](https://github.com/jjarp)
-- removed ```#pragma``` message for ```moves_per_click``` contructor parameter
+- removed ```#pragma``` message for ```moves_per_click``` constructor parameter
 - renamed  variable ```moves_per_click``` to ```steps_per_click```
 
 ## [1.2.1] - 2020-04-20

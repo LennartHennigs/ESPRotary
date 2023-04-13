@@ -3,7 +3,7 @@
 Arduino/ESP library to simplify reading rotary encoder data.
 
 - Author: Lennart Hennigs (<https://www.lennarthennigs.de>)
-- Copyright (C) 2017-2022 Lennart Hennigs.
+- Copyright (C) 2017-2023 Lennart Hennigs.
 - Released under the MIT license.
 
 ## Description
@@ -37,11 +37,11 @@ Some of the code based of this library is based on code from [PJRC](https://www.
   - `void setLeftRotationHandler(CallbackFunction f)`
   - `void setUpperOverflowHandler(CallbackFunction f)`
   - `void setLowerOverflowHandler(CallbackFunction f)`
-- The library does not detect button clicks. You have to use a seperate library for this, e.g. [Button2](https://github.com/LennartHennigs/Button2).
+- The library does not detect button clicks. You have to use a separate library for this, e.g. my [Button2](https://github.com/LennartHennigs/Button2) library.
 
 ### Ranges
 
-- In the constructor you can define an upper and a lower treshhold. The encoder value will not be bypass  these values.
+- In the constructor you can define an upper and a lower threshold. The encoder value will not be bypass these values.
 - There are also getter and setter functions the these values
   - `void setUpperBound(int upper_bound)`
   - `void setLowerBound(int lower_bound)`
@@ -53,7 +53,9 @@ Some of the code based of this library is based on code from [PJRC](https://www.
 
 - If you want that out of bound events are only triggered once a bound is reached, you can set:
   - `retriggerEvent(false)`
-- Otherwise each (out of bounds) turn will retrigger the vent.
+- Otherwise each (out of bounds) turn will re-trigger the event.
+- If you want to disable rotate events that would go beyond your defined boundary you can use:
+  - `void triggerOnBounds(false)`
 
 ### Reading out information
 
@@ -75,7 +77,7 @@ Some of the code based of this library is based on code from [PJRC](https://www.
 - Use these functions to define the interval (between clicks) and the increment:
   - `void setSpeedupInterval(int time)`
   - `void setSpeedupIncrement(int inc)`
-- Per default  the interval is set to `75ms` and the increment is set to `5`.
+- Per default the interval is set to `75ms` and the increment is set to `5`.
 - There are also getter functions for both parameters:
   - `int getSpeedupInterval() const`
   - `int getSpeedupIncrement() const`
@@ -83,7 +85,7 @@ Some of the code based of this library is based on code from [PJRC](https://www.
   - `void enableSpeedup(bool enable)`
 - ...and to check:
   - `bool isSpeedupEnabled() const`
-- There are also event handers that let you track if the speedup mode was entered or exited:
+- There are also event handlers that let you track if the speedup mode was entered or exited:
   - `void setSpeedupStartedHandler(CallbackFunction f)`
   - `void setSpeedupEndedHandler(CallbackFunction f)`
 - Alternatively, you can use this function to determine its state:
@@ -103,7 +105,7 @@ Some of the code based of this library is based on code from [PJRC](https://www.
 
 ### IDs for Encoder Instances
 
-- Each enocder instance gets a unique (auto incremented) ID upon creation.
+- Each encoder instance gets a unique (auto incremented) ID upon creation.
 - You can get a encoders' ID via `getID()`.
 - Alternatively, you can use `setID(int newID)` to set a new one. But then you need to make sure that they are unique.
 - You can also use the `==` operator to compare encoders
@@ -111,7 +113,7 @@ Some of the code based of this library is based on code from [PJRC](https://www.
 ## Notes
 
 - To see the latest changes to the library please take a look at the [Changelog](https://github.com/LennartHennigs/ESPRotary/blob/master/CHANGELOG.md).
-- And if you find this library helpful, please consider giving it a star at [GitHub](<https://github.com/LennartHennigs/ESPRotary>.  Thanks!
+- And if you find this library helpful, please consider giving it a star at [GitHub](https://github.com/LennartHennigs/ESPRotary).  Thanks!
 
 ## Examples
 
@@ -128,9 +130,9 @@ These are the constructor and the member functions the library provides:
 
 ``` c++
   ESPRotary();
-  ESPRotary(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int inital_pos = 0, int increment = 1);
+  ESPRotary(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int iniital_pos = 0, int increment = 1);
 
-  void begin(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int inital_pos = 0, int increment = 1);
+  void begin(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int initial_pos = 0, int increment = 1);
 
   int getPosition() const;
   void resetPosition(int p = 0, bool fireCallback = true);
@@ -140,6 +142,8 @@ These are the constructor and the member functions the library provides:
 
   void setIncrement(int inc);
   int getIncrement() const;
+
+  void triggerOnBounds(bool triggerEvents = true);
 
   void enableSpeedup(bool enable);
   void setSpeedupInterval(int time);
@@ -186,7 +190,7 @@ Or download the ZIP archive (<https://github.com/lennarthennigs/ESPRotary/zipbal
 
 MIT License
 
-Copyright (c) 2017-2022 Lennart Hennigs
+Copyright (c) 2017-2023 Lennart Hennigs
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

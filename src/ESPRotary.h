@@ -47,14 +47,16 @@ class ESPRotary {
   rotary_event last_event;
   rotary_direction dir;
 
+  bool boundsTrigger = true;
   bool retrigger_event = true;
   bool enable_speedup = false;
-  int speedup_increment = 5;
-  int speedup_interval = 75;
+  unsigned int speedup_increment = 5;
+  unsigned int speedup_interval = 75;
   int in_speedup = false;
-  long last_turn = 0;
+  unsigned long last_turn = 0;
 
-  typedef void (*CallbackFunction)(ESPRotary &);
+  using CallbackFunction = void (*)(ESPRotary&);
+  
   CallbackFunction change_cb = NULL;
   CallbackFunction right_cb = NULL;
   CallbackFunction left_cb = NULL;
@@ -73,15 +75,16 @@ class ESPRotary {
   int getPosition() const;
   void resetPosition(int p = 0, bool fireCallback = true);
 
+  void triggerOnBounds(bool triggerEvents = true);
   rotary_direction getDirection() const;
   String directionToString(rotary_direction dir) const;
 
-  void setIncrement(int inc);
+  void setIncrement(int increment);
   int getIncrement() const;
 
   void enableSpeedup(bool enable);
-  void setSpeedupInterval(int time);
-  void setSpeedupIncrement(int inc);
+  void setSpeedupInterval(int interval);
+  void setSpeedupIncrement(int increment);
 
   bool isSpeedupEnabled() const;
   int getSpeedupInterval() const;
@@ -117,10 +120,11 @@ class ESPRotary {
  private:
   static int _nextID;
 
+  void _callCallback(CallbackFunction callback);
   void _setEvent(rotary_event e);
   bool _wasRotated();
-  bool _isWithinBounds(bool alert = false);
-  void _checkForSpeedup(long now);
+  bool _isWithinBounds(bool triggerAlerts = false);
+  void _checkForSpeedup(unsigned long now);
   void _setID();
 };
 

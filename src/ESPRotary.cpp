@@ -237,7 +237,7 @@ void ESPRotary::_checkForSpeedup(unsigned long now) {
 
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::triggerOnBounds(bool triggerEvents /* = false */) {
+void ESPRotary::triggerOnBounds(bool triggerEvents /* = true */) {
   boundsTrigger = triggerEvents;
 }
 

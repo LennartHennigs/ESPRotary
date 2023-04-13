@@ -47,7 +47,7 @@ class ESPRotary {
   rotary_event last_event;
   rotary_direction dir;
 
-  bool boundsTrigger = false;
+  bool boundsTrigger = true;
   bool retrigger_event = true;
   bool enable_speedup = false;
   unsigned int speedup_increment = 5;
@@ -75,7 +75,7 @@ class ESPRotary {
   int getPosition() const;
   void resetPosition(int p = 0, bool fireCallback = true);
 
-  void triggerOnBounds(bool triggerEvents = false);
+  void triggerOnBounds(bool triggerEvents = true);
   rotary_direction getDirection() const;
   String directionToString(rotary_direction dir) const;
 

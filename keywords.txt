@@ -27,6 +27,7 @@ setSpeedupStartedHandler    KEYWORD2
 setSpeedupEndedHandler  KEYWORD2
 isInSpeedup KEYWORD2
 retriggerEvent  KEYWORD2
+triggerOnBounds  KEYWORD2
 getID	KEYWORD2
 setID	KEYWORD2
 loop	KEYWORD2

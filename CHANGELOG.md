@@ -6,6 +6,10 @@
 
 **Note**: Unreleased changes are checked in but not part of an official release (available through the Arduino IDE or PlatfomIO) yet. This allows you to test WiP features and give feedback to them.
 
+## [2.1.1] - 2024-04-27
+
+- fixed bug in setIncrement() pointed out by WJurasek-KV
+
 ## [2.1.0] - 2024-04-13
 
 - updated enums with class feature

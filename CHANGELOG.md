@@ -2,12 +2,13 @@
 
 ## Unreleased
 
-- updated enums with class feature
+- none
 
 **Note**: Unreleased changes are checked in but not part of an official release (available through the Arduino IDE or PlatfomIO) yet. This allows you to test WiP features and give feedback to them.
 
 ## [2.1.0] - 2024-04-13
 
+- updated enums with class feature
 - Added `triggerOnBounds(bool triggerEvents = true)` method to be able to suppress rotate events when the boundaries are reached
 - Made `now` and time related attributes to `unsigned long`
 - Replaced cases with lookup table to simplify `loop()`

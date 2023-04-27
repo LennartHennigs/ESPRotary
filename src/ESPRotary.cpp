@@ -134,7 +134,7 @@ void ESPRotary::resetPosition(int p /* = 0 */, bool fireCallback /* = true */) {
 /////////////////////////////////////////////////////////////////
 
 void ESPRotary::setIncrement(int increment) {
-  increment = increment;
+  this->increment = increment;
 }
 
 /////////////////////////////////////////////////////////////////

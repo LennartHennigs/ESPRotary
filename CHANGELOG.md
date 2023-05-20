@@ -48,7 +48,7 @@ Most changes were suggested in [#43](https://github.com/LennartHennigs/ESPRotary
 
 ## [1.6.1] - 2022-12-24
 
-- replaced direction constants with enum
+- replaced direction constants with enum, now use it like this: `rotary_direction::right`
 - refactored `loop()`
 
 ## [1.6.0] - 2022-05-26

@@ -27,6 +27,9 @@ void setup() {
   r.setChangedHandler(rotate);
   r.setLeftRotationHandler(showDirection);
   r.setRightRotationHandler(showDirection);
+
+  r.setIncrement(10);
+  Serial.println(r.getIncrement());
 }
 
 void loop() {

@@ -9,6 +9,7 @@
 ## [2.1.1] - 2023-04-27
 
 - fixed bug in `setIncrement()` as pointed out by WJurasek-KV
+- updated `SimpleCounter.ino` example
 
 ## [2.1.0] - 2023-04-13
 

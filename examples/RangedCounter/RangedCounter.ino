@@ -41,8 +41,8 @@ void setup() {
   Serial.println(r.getPosition());
   Serial.println();
 
-// enable this to be also notified about rotation events when the bounds are hit
-//  r.triggerOnBounds(true);   // off per default
+// enable this to disable rotation callbacks when bounds are hit (on by default)
+//  r.triggerOnBounds(false);
 }
 
 void loop() {

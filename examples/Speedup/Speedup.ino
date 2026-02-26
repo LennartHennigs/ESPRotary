@@ -43,7 +43,7 @@ void setup() {
   r.setSpeedupIncrement(SPEEDUP_STEPS);
 
 
-  Serial.println("\n\Ranged & Speedup");
+  Serial.println("\n\nRanged & Speedup");
   Serial.println("You can only set values between " + String(MIN_POS) + " and " + String(MAX_POS) +".");
   Serial.print("Current position: ");
   Serial.println(r.getPosition());

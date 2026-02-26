@@ -38,21 +38,21 @@ class ESPRotary {
   int id;
   byte pin1, pin2;
   byte steps_per_click;
-  int lower_bound;
-  int upper_bound;
-  byte state;
-  int increment;
+  int lower_bound = INT16_MIN;
+  int upper_bound = INT16_MAX;
+  byte state = 0;
+  int increment = 1;
   int steps = 0;
   int last_steps = 0;
-  rotary_event last_event;
-  rotary_direction dir;
+  rotary_event last_event = rotary_event::none;
+  rotary_direction dir = rotary_direction::undefined;
 
   bool boundsTrigger = true;
   bool retrigger_event = true;
   bool enable_speedup = false;
   unsigned int speedup_increment = 5;
   unsigned int speedup_interval = 75;
-  int in_speedup = false;
+  bool in_speedup = false;
   unsigned long last_turn = 0;
 
   using CallbackFunction = void (*)(ESPRotary&);
@@ -68,9 +68,9 @@ class ESPRotary {
 
  public:
   ESPRotary();
-  ESPRotary(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int inital_pos = 0, int increment = 1);
+  ESPRotary(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int initial_pos = 0, int increment = 1);
 
-  void begin(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int inital_pos = 0, int increment = 1);
+  void begin(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int initial_pos = 0, int increment = 1);
 
   int getPosition() const;
   void resetPosition(int p = 0, bool fireCallback = true);
@@ -113,7 +113,7 @@ class ESPRotary {
   int getID() const;
   void setID(int newID);
 
-  bool operator==(ESPRotary &rhs);
+  bool operator==(const ESPRotary& rhs) const;
 
   void loop();
 

@@ -23,7 +23,7 @@ Button2 b;
 void setup() {
   Serial.begin(SERIAL_SPEED);
   delay(50);
-  Serial.println("\n\nSimple Counter");
+  Serial.println("\n\nSimple Counter with Button");
   
   r.begin(ROTARY_PIN1, ROTARY_PIN2, CLICKS_PER_STEP);
   r.setChangedHandler(rotate);

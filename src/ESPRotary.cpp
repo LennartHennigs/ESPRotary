@@ -27,14 +27,14 @@ ESPRotary::ESPRotary() {
 
 /////////////////////////////////////////////////////////////////
 
-ESPRotary::ESPRotary(byte pin1, byte pin2, byte steps_per_click /* = 1 */, int lower_bound /* = INT16_MIN */, int upper_bound /* = INT16_MAX */, int inital_pos /* = 0 */, int increment /* = 1 */) {
-  ESPRotary();
-  begin(pin1, pin2, steps_per_click, lower_bound, upper_bound, inital_pos, increment);
+ESPRotary::ESPRotary(byte pin1, byte pin2, byte steps_per_click /* = 1 */, int lower_bound /* = INT16_MIN */, int upper_bound /* = INT16_MAX */, int initial_pos /* = 0 */, int increment /* = 1 */) {
+  _setID();
+  begin(pin1, pin2, steps_per_click, lower_bound, upper_bound, initial_pos, increment);
 }
 
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::begin(byte pin1, byte pin2, byte steps_per_click /* = 1 */, int lower_bound /* = INT16_MIN */, int upper_bound /* = INT16_MAX */, int inital_pos /* = 0 */, int increment /* = 1 */) {
+void ESPRotary::begin(byte pin1, byte pin2, byte steps_per_click /* = 1 */, int lower_bound /* = INT16_MIN */, int upper_bound /* = INT16_MAX */, int initial_pos /* = 0 */, int increment /* = 1 */) {
   this->pin1 = pin1;
   this->pin2 = pin2;
   pinMode(pin1, INPUT_PULLUP);
@@ -46,7 +46,7 @@ void ESPRotary::begin(byte pin1, byte pin2, byte steps_per_click /* = 1 */, int 
   setStepsPerClick(steps_per_click);
 
   loop();
-  steps = inital_pos * steps_per_click;
+  steps = initial_pos * steps_per_click;
   last_event = rotary_event::none;
   dir = rotary_direction::undefined;
 }
@@ -164,7 +164,9 @@ rotary_direction ESPRotary::getDirection() const {
 /////////////////////////////////////////////////////////////////
 
 String ESPRotary::directionToString(rotary_direction dir) const {
-  return (dir == rotary_direction::right) ? "right" : "left";
+  if (dir == rotary_direction::right) return "right";
+  if (dir == rotary_direction::left)  return "left";
+  return "undefined";
 }
 
 /////////////////////////////////////////////////////////////////
@@ -187,7 +189,7 @@ void ESPRotary::setID(int newID) {
 
 /////////////////////////////////////////////////////////////////
 
-bool ESPRotary::operator==(ESPRotary &rhs) {
+bool ESPRotary::operator==(const ESPRotary& rhs) const {
   return (this == &rhs);
 }
 

@@ -2,7 +2,15 @@
 
 ## Unreleased
 
-- none
+- Fixed parameterized constructor delegation — `ESPRotary(pin1, pin2, ...)` now correctly assigns an ID to `this` instead of a discarded temporary
+- Added default member initializers for `lower_bound`, `upper_bound`, `state`, `increment`, `last_event`, `dir`, and `steps_per_click` to prevent undefined behavior when `begin()` is called without a prior `ESPRotary()` constructor
+- Fixed `directionToString()` returning `"left"` for `rotary_direction::undefined`; it now returns `"undefined"`
+- Fixed `operator==` to be `const`-correct: `bool operator==(const ESPRotary& rhs) const`
+- Changed `in_speedup` member type from `int` to `bool`
+- Fixed typo `inital_pos` → `initial_pos` in constructor and `begin()` signatures
+- Fixed invalid escape sequence `"\n\R"` in `Speedup.ino` (was garbling the title line)
+- Fixed wrong title `"Simple Counter"` in `SimpleCounterWithButton.ino`
+- Fixed inverted comment on `triggerOnBounds` in `RangedCounter.ino` (rotation callbacks are **on** by default; pass `false` to disable them)
 
 **Note**: Unreleased changes are checked in but not part of an official release (available through the Arduino IDE or PlatfomIO) yet. This allows you to test WiP features and give feedback to them.
 

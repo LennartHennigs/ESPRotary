@@ -37,7 +37,7 @@ class ESPRotary {
  protected:
   int id;
   byte pin1, pin2;
-  byte steps_per_click;
+  byte steps_per_click = 1;
   int lower_bound = INT16_MIN;
   int upper_bound = INT16_MAX;
   byte state = 0;

@@ -47,6 +47,7 @@ void ESPRotary::begin(byte pin1, byte pin2, byte steps_per_click /* = 1 */, int 
 
   loop();
   steps = initial_pos * steps_per_click;
+  last_steps = steps;
   last_event = rotary_event::none;
   dir = rotary_direction::undefined;
 }
@@ -125,6 +126,7 @@ void ESPRotary::resetPosition(int p /* = 0 */, bool fireCallback /* = true */) {
   // yes...
   steps = p * steps_per_click;
   _isWithinBounds();
+  last_steps = steps;
   if (fireCallback) _callCallback(change_cb);
   last_event = rotary_event::none;
   dir = rotary_direction::undefined;
@@ -145,8 +147,12 @@ int ESPRotary::getIncrement() const {
 
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::setStepsPerClick(int steps) {
-  steps_per_click = (steps < 1) ? 1 : steps;
+void ESPRotary::setStepsPerClick(int newStepsPerClick) {
+  int pos = getPosition();
+  steps_per_click = (newStepsPerClick < 1) ? 1 : newStepsPerClick;
+  // keep the reported position stable when the divisor changes
+  steps = pos * steps_per_click;
+  last_steps = steps;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -199,6 +205,12 @@ void* ESPRotary::getContext() const {
 
 /////////////////////////////////////////////////////////////////
 
+void ESPRotary::setPinReadFunction(PinReadFunction f) {
+  pinReadFn = (f != NULL) ? f : digitalRead;
+}
+
+/////////////////////////////////////////////////////////////////
+
 bool ESPRotary::operator==(const ESPRotary& rhs) const {
   return (this == &rhs);
 }
@@ -225,11 +237,13 @@ void ESPRotary::loop() {
 
 bool ESPRotary::_wasRotated() {
   static const int8_t factors[] = {0, 1, -1, 2, -1, 0, -2, 1, 1, -2, 0, -1, 2, -1, 1, 0};
-  int encoderState = (state & 3) | digitalRead(pin1) << 2 | digitalRead(pin2) << 3 ;
+  int encoderState = (state & 3) | pinReadFn(pin1) << 2 | pinReadFn(pin2) << 3 ;
   steps += factors[encoderState] * increment;
   state = (encoderState >> 2);
   int stepDifference = abs(steps - last_steps);
-  return stepDifference >= (steps_per_click * increment);
+  // abs(increment) so a negative increment (reversed wiring) inverts the
+  // direction without making the threshold negative (which would fire every loop)
+  return stepDifference >= (steps_per_click * abs(increment));
 }
 
 /////////////////////////////////////////////////////////////////

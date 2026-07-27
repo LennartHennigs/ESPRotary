@@ -52,4 +52,19 @@ Test sources live in `test/test_*/` with shared helpers in `test/shared/test_hel
 
 ## Release Process
 
-Update `library.properties` and `library.json` with the new version number, then add an entry to `CHANGELOG.md`.
+Follow semver: a new public method (e.g. `setContext`) is a minor bump; a bug fix is a patch.
+
+1. Bump the version in **both** `library.properties` (`version=`) and `library.json` (`"version"`) — they must match.
+2. Add a dated entry to `CHANGELOG.md` (American English spelling).
+3. Make sure all native tests pass (`pio test -e test_core -e test_context -e test_rotation`) and an example still compiles for ESP8266.
+4. Merge to `master`.
+5. Tag + create a GitHub release. Tags use the **bare version number** (e.g. `2.2.1`, no `v` prefix):
+   ```
+   gh release create 2.2.1 --target master --title "2.2.1" --notes-file <notes> --latest
+   ```
+   The **Arduino Library Manager** auto-indexes new release tags — no further action.
+6. Publish to the **PlatformIO registry** (requires `pio account login` first — interactive, must be done by the maintainer):
+   ```
+   pio pkg publish --no-interactive
+   ```
+   `pio pkg publish` packages the current working directory (the `/.pio/` build dir and `.git` are excluded automatically) and uses the version from `library.json`. A published version is immutable — it can only be published once.

@@ -27,15 +27,29 @@ int leftCount = 0;
 int rightCount = 0;
 int upperCount = 0;
 int lowerCount = 0;
+int speedupStartCount = 0;
+int speedupEndCount = 0;
 
 void onChange(ESPRotary&) { changeCount++; }
 void onLeft(ESPRotary&) { leftCount++; }
 void onRight(ESPRotary&) { rightCount++; }
 void onUpper(ESPRotary&) { upperCount++; }
 void onLower(ESPRotary&) { lowerCount++; }
+void onSpeedupStart(ESPRotary&) { speedupStartCount++; }
+void onSpeedupEnd(ESPRotary&) { speedupEndCount++; }
 
 void resetCounters() {
   changeCount = leftCount = rightCount = upperCount = lowerCount = 0;
+  speedupStartCount = speedupEndCount = 0;
+}
+
+// Build an encoder on the simulated pins with explicit bounds.
+inline ESPRotary makeRotary(int lower, int upper) {
+  simPinState = 0;
+  ESPRotary r;
+  r.setPinReadFunction(fakePinRead);
+  r.begin(ROTARY_PIN1, ROTARY_PIN2, CLICKS_PER_STEP, lower, upper);
+  return r;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -164,6 +178,105 @@ test(rotation, steps_per_click_change_preserves_position) {
   assertEqual(r.getPosition(), 3);
   r.setStepsPerClick(2);
   assertEqual(r.getPosition(), 3);
+}
+
+/////////////////////////////////////////////////////////////////
+// Characterization: bound event options
+/////////////////////////////////////////////////////////////////
+
+test(rotation, trigger_on_bounds_false_suppresses_rotation_callback) {
+  ESPRotary r = makeRotary(0, 2);
+  r.triggerOnBounds(false);
+  resetCounters();
+  r.setChangedHandler(onChange);
+  r.setUpperOverflowHandler(onUpper);
+  turnRight(r, 3);
+  // change fires only for the in-bounds detent, not on the bound hit
+  assertEqual(changeCount, 1);
+  assertMoreOrEqual(upperCount, 1);
+}
+
+test(rotation, retrigger_event_false_fires_bound_once) {
+  ESPRotary r = makeRotary(0, 2);
+  r.retriggerEvent(false);
+  resetCounters();
+  r.setUpperOverflowHandler(onUpper);
+  turnRight(r, 4);  // reaches the bound, then keeps pushing against it
+  assertEqual(upperCount, 1);
+}
+
+test(rotation, lower_bound_overflow_clamps_and_fires) {
+  ESPRotary r = makeRotary(-2, 2);
+  resetCounters();
+  r.setLowerOverflowHandler(onLower);
+  turnLeft(r, 5);
+  assertEqual(r.getPosition(), -2);
+  assertMoreOrEqual(lowerCount, 1);
+}
+
+/////////////////////////////////////////////////////////////////
+// Characterization: getLastEvent, left handler, resetPosition callback
+/////////////////////////////////////////////////////////////////
+
+test(rotation, get_last_event_tracks_events) {
+  ESPRotary r = createTestRotary();
+  assertTrue(r.getLastEvent() == rotary_event::none);
+  turnRight(r, 1);
+  assertTrue(r.getLastEvent() == rotary_event::right_rotation);
+  turnLeft(r, 1);
+  assertTrue(r.getLastEvent() == rotary_event::left_rotation);
+}
+
+test(rotation, get_last_event_reports_upper_bound_hit) {
+  ESPRotary r = makeRotary(0, 2);
+  turnRight(r, 4);
+  assertTrue(r.getLastEvent() == rotary_event::upper_bound_hit);
+}
+
+test(rotation, left_rotation_handler_fires_per_detent) {
+  ESPRotary r = createTestRotary();
+  resetCounters();
+  r.setLeftRotationHandler(onLeft);
+  turnLeft(r, 2);
+  assertEqual(leftCount, 2);
+}
+
+test(rotation, reset_position_with_callback_fires_once) {
+  ESPRotary r = createTestRotary();
+  resetCounters();
+  r.setChangedHandler(onChange);
+  r.resetPosition(10);  // fireCallback defaults to true
+  assertEqual(changeCount, 1);
+  assertEqual(r.getPosition(), 10);
+  r.loop();             // no phantom on the following loop
+  assertEqual(changeCount, 1);
+}
+
+/////////////////////////////////////////////////////////////////
+// Characterization: speedup engages and ends
+/////////////////////////////////////////////////////////////////
+
+test(rotation, speedup_engages_on_fast_rotation) {
+  ESPRotary r = createTestRotary();
+  r.enableSpeedup(true);
+  resetCounters();
+  r.setSpeedupStartedHandler(onSpeedupStart);
+  turnRight(r, 4);  // consecutive detents are microseconds apart
+  assertTrue(r.isInSpeedup());
+  assertMore(speedupStartCount, 0);
+}
+
+test(rotation, speedup_ends_after_idle) {
+  ESPRotary r = createTestRotary();
+  r.enableSpeedup(true);
+  r.setSpeedupEndedHandler(onSpeedupEnd);
+  turnRight(r, 4);
+  assertTrue(r.isInSpeedup());
+  resetCounters();
+  delay(r.getSpeedupInterval() + 30);  // let the encoder go "idle"
+  turnRight(r, 1);                        // this slow detent ends speedup
+  assertFalse(r.isInSpeedup());
+  assertMore(speedupEndCount, 0);
 }
 
 /////////////////////////////////////////////////////////////////

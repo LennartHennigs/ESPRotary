@@ -1,5 +1,7 @@
 # Changelog
 
+## Unreleased
+
 ## [2.2.1] - 2026-07-27
 
 - Fixed a phantom rotation/change event fired on the first `loop()` after `resetPosition()` or after `begin()` with a non-zero `initial_pos`; `last_steps` was left stale so the next `loop()` decoded a large bogus step difference

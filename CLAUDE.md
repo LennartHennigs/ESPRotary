@@ -41,7 +41,9 @@ pio test -e test_rotation  # decode/event engine via the setPinReadFunction() se
 
 The `test_rotation` suite drives a simulated quadrature signal through `setPinReadFunction()` (a settable pin-read override that defaults to `digitalRead`), letting `loop()`, the decode table, and event callbacks be tested without hardware.
 
-Test sources live in `test/test_*/` with shared helpers in `test/shared/test_helpers.h`; env config is in `platformio.ini`. Note: PlatformIO reports "0 test cases" because it doesn't parse AUnit's output — a green (exit 0) run means the AUnit assertions passed; run `.pio/build/<env>/program` directly to see the per-test summary.
+Test sources live in `test/test_*/` with shared helpers in `test/shared/test_helpers.h`; env config is in `platformio.ini`.
+
+**Project skills** (`.claude/skills/`, mirrored from the Button2 library) automate the common workflows — `test`, `compile`, `commit`, `readme`, and `release`. Prefer them over ad-hoc commands; the `release` skill in particular encodes the exact publish procedure below. Note: PlatformIO reports "0 test cases" because it doesn't parse AUnit's output — a green (exit 0) run means the AUnit assertions passed; run `.pio/build/<env>/program` directly to see the per-test summary.
 
 **To test changes**, upload an example sketch to hardware:
 - `examples/SimpleCounter` — basic rotation and direction callbacks

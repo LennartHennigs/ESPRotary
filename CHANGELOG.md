@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.2.1] - 2026-07-27
+
+- Fixed a phantom rotation/change event fired on the first `loop()` after `resetPosition()` or after `begin()` with a non-zero `initial_pos`; `last_steps` was left stale so the next `loop()` decoded a large bogus step difference
+- Added `setPinReadFunction()` — an optional override for how the encoder pins are read (defaults to `digitalRead`), used as a test seam to simulate rotation without hardware
+- Added a `test_rotation` suite covering the decode/event engine (rotation, direction, bound overflow callbacks, speedup) plus regression tests for the phantom-event fix
+
 ## [2.2.0] - 2026-07-27
 
 - Added `setContext(void*)` / `getContext()` to attach a custom context (typically a pointer to the object that owns the encoder) to an instance, retrievable inside callbacks via the passed `ESPRotary&`. This is the recommended way to give the plain-function callbacks access to custom state. Resolves [#48](https://github.com/LennartHennigs/ESPRotary/issues/48)

@@ -32,5 +32,6 @@ getID	KEYWORD2
 setID	KEYWORD2
 setContext	KEYWORD2
 getContext	KEYWORD2
+setPinReadFunction	KEYWORD2
 loop	KEYWORD2
 direction	LITERAL1

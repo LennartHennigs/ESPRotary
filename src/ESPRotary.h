@@ -56,7 +56,10 @@ class ESPRotary {
   unsigned long last_turn = 0;
 
   using CallbackFunction = void (*)(ESPRotary&);
-  
+  using PinReadFunction = int (*)(uint8_t);
+
+  PinReadFunction pinReadFn = digitalRead;
+
   CallbackFunction change_cb = NULL;
   CallbackFunction right_cb = NULL;
   CallbackFunction left_cb = NULL;
@@ -117,6 +120,10 @@ class ESPRotary {
 
   void setContext(void* ctx);
   void* getContext() const;
+
+  // Override how the encoder pins are read (defaults to digitalRead).
+  // Mainly a test seam to simulate rotation without hardware.
+  void setPinReadFunction(PinReadFunction f);
 
   bool operator==(const ESPRotary& rhs) const;
 

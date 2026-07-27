@@ -22,6 +22,8 @@ The library is a single class (`ESPRotary`) split into two files:
 - `retriggerEvent(false)` suppresses repeated boundary events; `triggerOnBounds(false)` suppresses rotation callbacks when at a boundary
 - Each instance gets a static auto-incremented `id`
 - `setContext(void*)` / `getContext()` store an arbitrary pointer on the instance (usually the owning object) so the plain-function callbacks can recover custom state via the passed `ESPRotary&`
+- **Invariant:** `_wasRotated()` fires on `abs(steps - last_steps)` crossing a threshold, so anywhere `steps` is assigned directly (outside `loop()` — i.e. `resetPosition()` and `begin()`'s `initial_pos`) must also set `last_steps = steps`, or the next `loop()` decodes a phantom rotation/change event
+- `setPinReadFunction(fn)` overrides how the pins are read (defaults to `digitalRead`); it exists as a test seam so rotation can be simulated on the host
 
 ## Development
 
@@ -45,6 +47,7 @@ Test sources live in `test/test_*/` with shared helpers in `test/shared/test_hel
 - `examples/SimpleCounter` — basic rotation and direction callbacks
 - `examples/RangedCounter` — bounds and overflow callbacks
 - `examples/Speedup` — speedup mode
+- `examples/Context` — passing an owning object to callbacks via `setContext()`
 - `examples/ESP32Interrupt` / `examples/ESP8266Interrupt` — timer interrupt usage instead of `loop()`
 
 ## Release Process

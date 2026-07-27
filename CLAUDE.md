@@ -21,6 +21,7 @@ The library is a single class (`ESPRotary`) split into two files:
 - Speedup mode (`enableSpeedup`) increases the effective increment when turns happen faster than `speedup_interval` ms
 - `retriggerEvent(false)` suppresses repeated boundary events; `triggerOnBounds(false)` suppresses rotation callbacks when at a boundary
 - Each instance gets a static auto-incremented `id`
+- `setContext(void*)` / `getContext()` store an arbitrary pointer on the instance (usually the owning object) so the plain-function callbacks can recover custom state via the passed `ESPRotary&`
 
 ## Development
 

@@ -66,6 +66,8 @@ class ESPRotary {
   CallbackFunction speedup_start_cb = NULL;
   CallbackFunction speedup_end_cb = NULL;
 
+  void* context = nullptr;
+
  public:
   ESPRotary();
   ESPRotary(byte pin1, byte pin2, byte steps_per_click = 1, int lower_bound = INT16_MIN, int upper_bound = INT16_MAX, int initial_pos = 0, int increment = 1);
@@ -112,6 +114,9 @@ class ESPRotary {
 
   int getID() const;
   void setID(int newID);
+
+  void setContext(void* ctx);
+  void* getContext() const;
 
   bool operator==(const ESPRotary& rhs) const;
 

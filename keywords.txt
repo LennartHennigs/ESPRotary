@@ -30,5 +30,7 @@ retriggerEvent  KEYWORD2
 triggerOnBounds  KEYWORD2
 getID	KEYWORD2
 setID	KEYWORD2
+setContext	KEYWORD2
+getContext	KEYWORD2
 loop	KEYWORD2
 direction	LITERAL1

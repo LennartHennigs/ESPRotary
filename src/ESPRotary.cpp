@@ -189,6 +189,16 @@ void ESPRotary::setID(int newID) {
 
 /////////////////////////////////////////////////////////////////
 
+void ESPRotary::setContext(void* ctx) {
+  context = ctx;
+}
+
+void* ESPRotary::getContext() const {
+  return context;
+}
+
+/////////////////////////////////////////////////////////////////
+
 bool ESPRotary::operator==(const ESPRotary& rhs) const {
   return (this == &rhs);
 }

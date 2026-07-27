@@ -110,6 +110,36 @@ Some of the code based of this library is based on code from [PJRC](https://www.
 - Alternatively, you can use `setID(int newID)` to set a new one. But then you need to make sure that they are unique.
 - You can also use the `==` operator to compare encoders
 
+### Context
+
+- The callback handlers are plain C function pointers, so they cannot capture surrounding state (no lambdas with captures).
+- To give a handler access to custom data — most commonly a pointer to the object that _owns_ the encoder — attach it as the encoder's context:
+  - `void setContext(void* ctx)` stores a `void*` on the encoder instance.
+  - `void* getContext() const` returns it.
+- Inside a handler you retrieve the context via the passed `ESPRotary&` and cast it back:
+
+``` c++
+class Dial {
+ public:
+  void begin(byte p1, byte p2) {
+    r.begin(p1, p2, 4);
+    r.setContext(this);                 // hand the encoder a pointer back to us
+    r.setChangedHandler(Dial::onRotate);
+  }
+  void loop() { r.loop(); }
+
+  static void onRotate(ESPRotary& sender) {
+    Dial* self = static_cast<Dial*>(sender.getContext());
+    self->handle(sender.getPosition());
+  }
+ private:
+  void handle(int pos) { /* ... */ }
+  ESPRotary r;
+};
+```
+
+- See the [Context](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/Context/Context.ino) example.
+
 ## Notes
 
 - To see the latest changes to the library please take a look at the [Changelog](https://github.com/LennartHennigs/ESPRotary/blob/master/CHANGELOG.md).
@@ -121,6 +151,7 @@ Some of the code based of this library is based on code from [PJRC](https://www.
 - [SimpleCounterWithButton](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/SimpleCounterWithButton/SimpleCounterWithButton.ino) - basic example with a button handler
 - [RangedCounter](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/RangedCounter/RangedCounter.ino) - shows how to define ranges
 - [Speedup](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/Speedup/Speedup.ino) - shows how to implement the speedup mode
+- [Context](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/Context/Context.ino) - shows how to pass a context object to the callbacks
 - [ESP8266Interrupt](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/ESP8266Interrupt/ESP8266Interrupt.ino) - uses an ESP8266 interrupt instead of the main loop
 - [ESP32Interrupt](https://github.com/LennartHennigs/ESPRotary/blob/master/examples/ESP32Interrupt/ESP32Interrupt.ino) - uses an ESP32 interrupt instead of the main loop
 
@@ -175,6 +206,9 @@ These are the constructor and the member functions the library provides:
 
   int getID() const;
   void setID(int newID);
+
+  void setContext(void* ctx);
+  void* getContext() const;
 
   bool operator == (ESPRotary &rhs);
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.2.0] - 2026-07-27
+
+- Added `setContext(void*)` / `getContext()` to attach a custom context (typically a pointer to the object that owns the encoder) to an instance, retrievable inside callbacks via the passed `ESPRotary&`. This is the recommended way to give the plain-function callbacks access to custom state. Resolves [#48](https://github.com/LennartHennigs/ESPRotary/issues/48)
+- Added a `Context` example showing the owning-object pattern
+- Added a native test harness (PlatformIO + EpoxyDuino + AUnit) with a core-behavior suite and a context suite; see `platformio.ini` and `test/`
+
 ## [2.1.2] - 2026-05-09
 
 - Fixed parameterized constructor delegation — `ESPRotary(pin1, pin2, ...)` now correctly assigns an ID to `this` instead of a discarded temporary

@@ -3,8 +3,10 @@
 ## [2.2.1] - 2026-07-27
 
 - Fixed a phantom rotation/change event fired on the first `loop()` after `resetPosition()` or after `begin()` with a non-zero `initial_pos`; `last_steps` was left stale so the next `loop()` decoded a large bogus step difference
+- Fixed a negative `increment` making the rotation threshold negative, which fired an event on every `loop()`; the threshold now uses `abs(increment)`, so a negative increment cleanly inverts the counting direction (useful for reversed wiring)
+- Fixed `setStepsPerClick()` silently changing the reported position when called after some rotation; it now rescales `steps` to keep `getPosition()` stable
 - Added `setPinReadFunction()` — an optional override for how the encoder pins are read (defaults to `digitalRead`), used as a test seam to simulate rotation without hardware
-- Added a `test_rotation` suite covering the decode/event engine (rotation, direction, bound overflow callbacks, speedup) plus regression tests for the phantom-event fix
+- Added a `test_rotation` suite covering the decode/event engine (rotation, direction, bound overflow callbacks, speedup) plus regression tests for the fixes above
 
 ## [2.2.0] - 2026-07-27
 

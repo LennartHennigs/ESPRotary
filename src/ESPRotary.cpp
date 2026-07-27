@@ -147,8 +147,12 @@ int ESPRotary::getIncrement() const {
 
 /////////////////////////////////////////////////////////////////
 
-void ESPRotary::setStepsPerClick(int steps) {
-  steps_per_click = (steps < 1) ? 1 : steps;
+void ESPRotary::setStepsPerClick(int newStepsPerClick) {
+  int pos = getPosition();
+  steps_per_click = (newStepsPerClick < 1) ? 1 : newStepsPerClick;
+  // keep the reported position stable when the divisor changes
+  steps = pos * steps_per_click;
+  last_steps = steps;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -237,7 +241,9 @@ bool ESPRotary::_wasRotated() {
   steps += factors[encoderState] * increment;
   state = (encoderState >> 2);
   int stepDifference = abs(steps - last_steps);
-  return stepDifference >= (steps_per_click * increment);
+  // abs(increment) so a negative increment (reversed wiring) inverts the
+  // direction without making the threshold negative (which would fire every loop)
+  return stepDifference >= (steps_per_click * abs(increment));
 }
 
 /////////////////////////////////////////////////////////////////

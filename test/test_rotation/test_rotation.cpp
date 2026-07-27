@@ -137,6 +137,36 @@ test(rotation, no_phantom_event_after_begin_with_initial_pos) {
 }
 
 /////////////////////////////////////////////////////////////////
+// Regression: a negative increment should invert direction and still
+// fire exactly one event per detent (review finding #5 — the rotation
+// threshold went negative and fired on every loop()).
+/////////////////////////////////////////////////////////////////
+
+test(rotation, negative_increment_reverses_and_fires_once) {
+  ESPRotary r = createTestRotary();
+  r.setIncrement(-1);
+  r.setChangedHandler(onChange);
+  resetCounters();
+  turnRight(r, 1);
+  assertEqual(changeCount, 1);
+  assertEqual(r.getPosition(), -1);
+  assertTrue(r.getDirection() == rotary_direction::left);
+}
+
+/////////////////////////////////////////////////////////////////
+// Regression: changing steps_per_click at runtime should keep the
+// reported position (review finding #3 — it silently rescaled).
+/////////////////////////////////////////////////////////////////
+
+test(rotation, steps_per_click_change_preserves_position) {
+  ESPRotary r = createTestRotary();
+  turnRight(r, 3);
+  assertEqual(r.getPosition(), 3);
+  r.setStepsPerClick(2);
+  assertEqual(r.getPosition(), 3);
+}
+
+/////////////////////////////////////////////////////////////////
 
 void setup() {
   delay(100);
